@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 
 .idea
-main.db
+*.db
+!test_db.db
