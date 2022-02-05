@@ -16,11 +16,12 @@ class Database(object):
         self.cursor.close()
         self.conn.close()
 
-    # Получить данные из базы
-    def select(self, table: str, items='*', filter={}):
-        sql = "SELECT {items} FROM {table} ".format(items=f"{', '.join(items)}",
-                                                    table=table)
-
+    # Получить данные
+    def select(self, table: str, items='*', filter={}, unique=False):
+        sql = "SELECT {unique}{items} FROM {table} ".format(items=f"{', '.join(items)}",
+                                                            table=table,
+                                                            unique=" DISTINCT" if unique else "")
+        # Если добавлен фильтр
         if filter:
             filter_str = [str(key) + '=' + (str(value) if type(value) == int else f"'{value}'") for key, value in
                           filter.items()]
@@ -31,20 +32,23 @@ class Database(object):
         response = self.cursor.execute(sql).fetchall()
         return response
 
-    # Добавить значения в базу
+    # Добавить значения
     def insert(self, table: str, cols: list, values: list):
         sql = "INSERT INTO {table} ({cols}) VALUES ({values})".format(table=table, cols=", ".join(cols),
                                                                       values=", ".join(
                                                                           [f"'{value}'" for value in values]))
+
         logging.debug(sql)
         self.cursor.execute(sql)
         self.conn.commit()
 
+    #Удалить строку значений
     def delete(self, table: str, filter: dict):
         filter_str = [str(key) + '=' + (str(value) if type(value) == int else f"'{value}'") for key, value in
                       filter.items()]
         sql = "DELETE FROM {table} WHERE {filter}".format(table=table,
                                                           filter=' and '.join(filter_str))
+
         logging.debug(sql)
         self.cursor.execute(sql)
         self.conn.commit()
