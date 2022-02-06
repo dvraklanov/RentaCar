@@ -23,14 +23,14 @@ class Database(object):
                                                             unique=" DISTINCT" if unique else "")
         # Если добавлен фильтр
         if filter:
-            filter_str = [str(key) + '=' + (str(value) if type(value) == int else f"'{value}'") for key, value in
-                          filter.items()]
-            sql += "WHERE {filter}".format(filter=' and '.join(filter_str))
+            filter_str = ' and '.join(
+                [str(key) + '=' + (str(value) if type(value) == int else f"'{value}'") for key, value in
+                 filter.items()])
+            sql += "WHERE {filter}".format(filter=filter_str)
 
         logging.debug(sql)
 
-        response = self.cursor.execute(sql).fetchall()
-        return response
+        return self.cursor.execute(sql).fetchall()
 
     # Добавить значения
     def insert(self, table: str, cols: list, values: list):
@@ -42,8 +42,27 @@ class Database(object):
         self.cursor.execute(sql)
         self.conn.commit()
 
+    def update(self, table: str, new_values: dict, filter: dict):
+        # Преобразование словаря в строку вида: "столбец" = значение, ...
+        new_values_str = ','.join(
+            [str(key) + '=' + (str(value) if type(value) == int else f"'{value}'") for key, value in
+             new_values.items()])
+
+        # Преобразование словаря в строку вида: "столбец" = значение and ...
+        filter_str = ' and '.join(
+            [str(key) + '=' + (str(value) if type(value) == int else f"'{value}'") for key, value in
+             filter.items()])
+
+        sql = "UPDATE {table} SET {new_values} WHERE {filter}".format(table=table,
+                                                                      new_values=new_values_str,
+                                                                      filter=filter_str)
+        logging.debug(sql)
+        self.cursor.execute(sql)
+        self.conn.commit()
+
     # Удалить строку значений
     def delete(self, table: str, filter: dict):
+        # Преобразование словаря в строку вида: "столбец" = значение, ...
         filter_str = [str(key) + '=' + (str(value) if type(value) == int else f"'{value}'") for key, value in
                       filter.items()]
         sql = "DELETE FROM {table} WHERE {filter}".format(table=table,
@@ -53,7 +72,7 @@ class Database(object):
         self.cursor.execute(sql)
         self.conn.commit()
 
-    # Создание таблицы, если не существует
+    # Создание таблицы, если не существует (пока не используется, таблица создается в ручную)
     def create_table(self, table_name: str, cols: dict):
         cols_str = [f'{col["name"]} {col["type"]} {col.get("param", "").upper()}' for col in cols]
         sql = """
@@ -61,5 +80,6 @@ class Database(object):
         ({cols_str})    
         """.format(table_name=table_name, cols_str=cols_str)
 
+        logging.debug(sql)
         self.cursor.execute(sql)
         self.conn.commit()

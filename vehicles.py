@@ -35,18 +35,24 @@ class Vehicles(object):
         return self.__db.select(table=self.__table_name,
                                 items=[col], unique=True)
 
+    # Отредактировать значения в существующей записи
+    def edit_spec(self, id: int, new_values: dict):
+
+        self.__db.update(table=self.__table_name,
+                         new_values=new_values, filter={'id': id})
+
     # Добавить новое транспортное средство
     def add_veh(self, veh_data: dict):
-        veh_data_keys = set(veh_data.keys())
-        spec_list_keys = set(self.spec_list.keys())
+        # veh_data_keys = set(veh_data.keys())
+        # spec_list_keys = set(self.spec_list.keys())
 
-        # Добавить сли в атрибутах есть все столбцы
-        if veh_data_keys == spec_list_keys:
-            self.__db.insert(table=self.__table_name,
-                             cols=spec_list_keys,
-                             values=[veh_data[spec] for spec in spec_list_keys])
-
-        else:
+        # Добавить если в атрибутах есть все столбцы
+        # if veh_data_keys == spec_list_keys:
+        self.__db.insert(table=self.__table_name,
+                         cols=list(veh_data.keys()),
+                         values=[veh_data[key] for key in veh_data.keys()])
+        """
+                else:
             # Проверка на недостающие и лишние столбцы
             if spec_list_keys.difference(veh_data_keys):
                 msg = f"Columns ({', '.join(spec_list_keys.difference(veh_data_keys))}) not found."
@@ -58,6 +64,7 @@ class Vehicles(object):
                       f"({', '.join(veh_data_keys.difference(spec_list_keys))})."
                 logging.error(msg)
                 raise AttributeError(msg)
+        """
 
     # Удаление транспортного средства по id
     def del_veh(self, id: int):
