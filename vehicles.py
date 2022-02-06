@@ -1,11 +1,10 @@
 import logging
-from sqlite3 import IntegrityError
-from utils import db
+from database import Database
 
 
 class Vehicles(object):
 
-    def __init__(self):
+    def __init__(self, db: Database):
         self.__db = db
         self.__table_name = 'vehicles'
         self.db_name = db.name
@@ -41,7 +40,7 @@ class Vehicles(object):
         veh_data_keys = set(veh_data.keys())
         spec_list_keys = set(self.spec_list.keys())
 
-        # Если в атрибутах есть все столбцы
+        # Добавить сли в атрибутах есть все столбцы
         if veh_data_keys == spec_list_keys:
             self.__db.insert(table=self.__table_name,
                              cols=spec_list_keys,
@@ -62,5 +61,5 @@ class Vehicles(object):
 
     # Удаление транспортного средства по id
     def del_veh(self, id: int):
-        return self.__db.delete(table=self.__table_name,
-                                filter={'id': id})
+        self.__db.delete(table=self.__table_name,
+                         filter={'id': id})

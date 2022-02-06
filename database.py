@@ -42,7 +42,7 @@ class Database(object):
         self.cursor.execute(sql)
         self.conn.commit()
 
-    #Удалить строку значений
+    # Удалить строку значений
     def delete(self, table: str, filter: dict):
         filter_str = [str(key) + '=' + (str(value) if type(value) == int else f"'{value}'") for key, value in
                       filter.items()]
@@ -50,5 +50,16 @@ class Database(object):
                                                           filter=' and '.join(filter_str))
 
         logging.debug(sql)
+        self.cursor.execute(sql)
+        self.conn.commit()
+
+    # Создание таблицы, если не существует
+    def create_table(self, table_name: str, cols: dict):
+        cols_str = [f'{col["name"]} {col["type"]} {col.get("param", "").upper()}' for col in cols]
+        sql = """
+        CREATE TABLE IF NOT EXISTS{table_name}  
+        ({cols_str})    
+        """.format(table_name=table_name, cols_str=cols_str)
+
         self.cursor.execute(sql)
         self.conn.commit()
