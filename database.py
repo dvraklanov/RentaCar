@@ -20,7 +20,7 @@ class Database(object):
     def select(self, table: str, items='*', filter={}, unique=False):
         sql = "SELECT {unique}{items} FROM {table} ".format(items=f"{', '.join(items)}",
                                                             table=table,
-                                                            unique=" DISTINCT" if unique else "")
+                                                            unique="DISTINCT " if unique else "")
         # Если добавлен фильтр
         if filter:
             filter_str = ' and '.join(
@@ -28,9 +28,11 @@ class Database(object):
                  filter.items()])
             sql += "WHERE {filter}".format(filter=filter_str)
 
-        logging.debug(sql)
-
-        return self.cursor.execute(sql).fetchall()
+        try:
+            logging.debug(sql)
+            return self.cursor.execute(sql).fetchall()
+        except (sqlite3.IntegrityError, sqlite3.OperationalError) as e:
+            logging.error(f"\n{e}\nОшибка при отправке SQL. Проверьте запрос:\n{sql}")
 
     # Добавить значения
     def insert(self, table: str, cols: list, values: list):
@@ -38,9 +40,12 @@ class Database(object):
                                                                       values=", ".join(
                                                                           [f"'{value}'" for value in values]))
 
-        logging.debug(sql)
-        self.cursor.execute(sql)
-        self.conn.commit()
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            logging.debug(sql)
+        except (sqlite3.IntegrityError, sqlite3.OperationalError) as e:
+            logging.error(f"\n{e}\nОшибка при отправке SQL. Проверьте запрос:\n{sql}")
 
     def update(self, table: str, new_values: dict, filter: dict):
         # Преобразование словаря в строку вида: "столбец" = значение, ...
@@ -56,9 +61,12 @@ class Database(object):
         sql = "UPDATE {table} SET {new_values} WHERE {filter}".format(table=table,
                                                                       new_values=new_values_str,
                                                                       filter=filter_str)
-        logging.debug(sql)
-        self.cursor.execute(sql)
-        self.conn.commit()
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            logging.debug(sql)
+        except (sqlite3.IntegrityError, sqlite3.OperationalError) as e:
+            logging.error(f"\n{e}\nОшибка при отправке SQL. Проверьте запрос:\n{sql}")
 
     # Удалить строку значений
     def delete(self, table: str, filter: dict):
@@ -68,9 +76,12 @@ class Database(object):
         sql = "DELETE FROM {table} WHERE {filter}".format(table=table,
                                                           filter=' and '.join(filter_str))
 
-        logging.debug(sql)
-        self.cursor.execute(sql)
-        self.conn.commit()
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            logging.debug(sql)
+        except (sqlite3.IntegrityError, sqlite3.OperationalError) as e:
+            logging.error(f"\n{e}\nОшибка при отправке SQL. Проверьте запрос:\n{sql}")
 
     # Создание таблицы, если не существует (пока не используется, таблица создается в ручную)
     def create_table(self, table_name: str, cols: dict):
@@ -80,6 +91,9 @@ class Database(object):
         ({cols_str})    
         """.format(table_name=table_name, cols_str=cols_str)
 
-        logging.debug(sql)
-        self.cursor.execute(sql)
-        self.conn.commit()
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            logging.debug(sql)
+        except (sqlite3.IntegrityError, sqlite3.OperationalError) as e:
+            logging.error(f"\n{e}\nОшибка при отправке SQL. Проверьте запрос:\n{sql}")
