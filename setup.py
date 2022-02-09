@@ -5,12 +5,10 @@ from app.main_window import MainWindow
 
 
 if __name__ == "__main__":
-    # главный класс приложения принимает строку - заголовок окна
-    app = QApplication(['Пример прииложения на PyQT'])
+    app = QApplication(sys.argv)
 
-    # создаем главный виджет размером 800x600 и отображаем его
-    widget = MainWindow()
-    widget.resize(800, 600)
-    widget.show()
+    window = MainWindow()
+    window.show()
 
     sys.exit(app.exec())
+
