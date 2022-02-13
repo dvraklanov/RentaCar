@@ -1,5 +1,4 @@
-import logging
-from database import Database
+from app.database import Database
 
 
 class Vehicles(object):
@@ -20,18 +19,18 @@ class Vehicles(object):
         self.status_list = ['Не доступно', 'Доступно', 'В аренде']
 
     # Получить id и название всех транспортных средств
-    def get_all_veh(self, filter={}):
+    def get_all_veh(self, filter={}) -> list:
         return self.__db.select(table=self.__table_name,
                                 items=['id', 'name', 'status'],
                                 filter=filter)
 
     # Получить характеристики треанспортного средства по id
-    def get_spec(self, id: int):
+    def get_spec(self, id: int) -> list:
         return self.__db.select(table=self.__table_name,
-                                filter={'id': id})[0]
+                                filter={'id': id})
 
     # Получить уникальные значение столбца характеристики
-    def get_uniq_spec(self, col: str):
+    def get_uniq_spec(self, col: str) -> list:
         return self.__db.select(table=self.__table_name,
                                 items=[col], unique=True)
 
@@ -51,20 +50,6 @@ class Vehicles(object):
         self.__db.insert(table=self.__table_name,
                          cols=list(veh_data.keys()),
                          values=[veh_data[key] for key in veh_data.keys()])
-        """
-                else:
-            # Проверка на недостающие и лишние столбцы
-            if spec_list_keys.difference(veh_data_keys):
-                msg = f"Columns ({', '.join(spec_list_keys.difference(veh_data_keys))}) not found."
-                logging.error(msg)
-                raise AttributeError(msg)
-
-            elif veh_data_keys.difference(spec_list_keys):
-                msg = f"Table {self.__table_name} haven't column " \
-                      f"({', '.join(veh_data_keys.difference(spec_list_keys))})."
-                logging.error(msg)
-                raise AttributeError(msg)
-        """
 
     # Удаление транспортного средства по id
     def del_veh(self, id: int):
