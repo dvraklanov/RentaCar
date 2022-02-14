@@ -19,7 +19,7 @@
      <rect>
       <x>280</x>
       <y>60</y>
-      <width>551</width>
+      <width>555</width>
       <height>601</height>
      </rect>
     </property>
@@ -75,7 +75,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="tableWidget">
+   <widget class="QTableWidget" name="spec_table">
     <property name="geometry">
      <rect>
       <x>860</x>
@@ -90,9 +90,12 @@
     <attribute name="horizontalHeaderDefaultSectionSize">
      <number>199</number>
     </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
     <column>
      <property name="text">
-      <string>New Column</string>
+      <string>name</string>
      </property>
     </column>
     <column>

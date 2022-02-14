@@ -40,7 +40,7 @@ class Database(object):
 
         try:
             data = self.cursor.execute(sql).fetchall()
-            cols = self.get_table_cols(table=table)
+            cols = items if items != "*" else self.get_table_cols(table=table)
             data_list_of_dict = [{col: item for col, item in zip(cols, row)} for row in data]
             logging.debug(sql)
             return data_list_of_dict

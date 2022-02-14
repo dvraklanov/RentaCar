@@ -7,6 +7,7 @@ class Vehicles(object):
         self.__db = db
         self.__table_name = 'vehicles'
         self.db_name = db.name
+        self.cols = self.__db.get_table_cols(table=self.__table_name)
 
         # Данные требуемые при добавлении автомобиля
         self.spec_list = {'name': 'Название модели', 'number_plate': 'Гос. номер',
@@ -27,7 +28,7 @@ class Vehicles(object):
     # Получить характеристики треанспортного средства по id
     def get_spec(self, id: int):
         return self.__db.select(table=self.__table_name,
-                                filter={'id': id})
+                                filter={'id': id})[0]
 
     # Получить уникальные значение столбца характеристики
     def get_uniq_spec(self, col: str):
