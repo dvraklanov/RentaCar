@@ -4,5 +4,5 @@ from app.database import Database
 db = Database("app/data/test_db")
 vehicle_data = Vehicles(db)
 
-print(db.get_table_cols("vehicles"))
+print(vehicle_data.get_all_veh())
 

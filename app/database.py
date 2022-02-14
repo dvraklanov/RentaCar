@@ -27,7 +27,7 @@ class Database(object):
             raise e
 
     # Получить данные
-    def select(self, table: str, items='*', filter={}, unique=False):
+    def select(self, table: str, items='*', filter={}, unique=False) -> list:
         sql = "SELECT {unique}{items} FROM {table} ".format(items=f"{', '.join(items)}",
                                                             table=table,
                                                             unique="DISTINCT " if unique else "")
@@ -40,8 +40,10 @@ class Database(object):
 
         try:
             data = self.cursor.execute(sql).fetchall()
+            cols = self.get_table_cols(table=table)
+            data_list_of_dict = [{col: item for col, item in zip(cols, row)} for row in data]
             logging.debug(sql)
-            return data
+            return data_list_of_dict
         except (sqlite3.IntegrityError, sqlite3.OperationalError) as e:
             logging.error(f"\n{e}\nОшибка при отправке SQL. Проверьте запрос:\n{sql}")
 
@@ -110,9 +112,9 @@ class Database(object):
             logging.error(f"\n{e}\nОшибка при отправке SQL. Проверьте запрос:\n{sql}")
 
     # Получение информации о таблице
-    def get_table_info(self, table_name: str):
+    def get_table_info(self, table: str):
 
-        sql = f"pragma table_info({table_name})"
+        sql = f"pragma table_info({table})"
         try:
             data = self.cursor.execute(sql).fetchall()
             logging.debug(sql)
@@ -120,9 +122,10 @@ class Database(object):
         except (sqlite3.IntegrityError, sqlite3.OperationalError) as e:
             logging.error(f"\n{e}\nОшибка при отправке SQL. Проверьте запрос:\n{sql}")
 
-    def get_table_cols(self, table_name: str):
+    # Получение название столбцов в таблице
+    def get_table_cols(self, table: str):
 
-        sql = f"SELECT name FROM PRAGMA_TABLE_INFO('{table_name}')"
+        sql = f"SELECT name FROM PRAGMA_TABLE_INFO('{table}')"
         try:
             data = self.cursor.execute(sql).fetchall()
             data = list(map(lambda x: x[0], data))

@@ -6,7 +6,9 @@ class Customers(object):
 
     def __init__(self, db: Database):
         self.__db = db
+        self.db_name = db.name
         self.__table_name = 'customers'
+        self.cols = self.__db.get_table_cols(self.__table_name)
 
     # Получить id и название всех транспортных средств
     def get_all_cust(self, filter={}):
