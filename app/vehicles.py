@@ -14,7 +14,7 @@ class Vehicles(object):
                           'body_type': 'Тип кузова', 'wheel_drive': 'Тип привода',
                           'fuel_type': 'Тип топлива', 'power_hp': 'Мощность (л.с.)',
                           'n_seat': 'Кол-во мест', 'gearbox_type': 'КПП',
-                          'rental_price': 'Стоимость аренды', 'status': 'Статус',
+                          'rental_price': 'Стоимость аренды (руб./сут.)', 'status': 'Статус',
                           'leased_from': 'Начало аренды', 'leased_to': 'Окончание аренды'}
 
         # Возможные состояния транспортного средства
