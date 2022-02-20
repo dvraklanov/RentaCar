@@ -14,13 +14,16 @@ class Vehicles(object):
                           'body_type': 'Тип кузова', 'wheel_drive': 'Тип привода',
                           'fuel_type': 'Тип топлива', 'power_hp': 'Мощность (л.с.)',
                           'n_seat': 'Кол-во мест', 'gearbox_type': 'КПП',
-                          'rental_price': 'Стоимость аренды'}
+                          'rental_price': 'Стоимость аренды', 'status': 'Статус',
+                          'leased_from': 'Начало аренды', 'leased_to': 'Окончание аренды'}
 
         # Возможные состояния транспортного средства
         self.status_list = ['Не доступно', 'Доступно', 'В аренде']
 
     # Получить id и название всех транспортных средств
-    def get_all_veh(self, filter={}):
+    def get_all_veh(self, filter=None):
+        if filter is None:
+            filter = {}
         return self.__db.select(table=self.__table_name,
                                 items=['id', 'name', 'status'],
                                 filter=filter)
@@ -32,8 +35,10 @@ class Vehicles(object):
 
     # Получить уникальные значение столбца характеристики
     def get_uniq_spec(self, col: str):
-        return self.__db.select(table=self.__table_name,
+        data = self.__db.select(table=self.__table_name,
                                 items=[col], unique=True)
+        data_list = [item[col] for item in data]
+        return data_list
 
     # Отредактировать значения в существующей записи
     def edit_spec(self, id: int, new_values: dict):

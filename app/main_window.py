@@ -25,6 +25,7 @@ class MainWindow(QMainWindow):
 
         self.db = Database("app/data/test_db")
         self.vehicle_data = Vehicles(self.db)
+        self.veh_filter = dict()
 
         """Установка доп. параметров интерфейса"""
 
@@ -45,29 +46,60 @@ class MainWindow(QMainWindow):
         self.ui.veh_table.setColumnWidth(1, 350)
 
         """Установка функционала элементов интерфейса"""
-        self.set_veh_table()
-
         self.ui.veh_table.cellClicked.connect(self.set_spec_table)
+        self.ui.find_btn.clicked.connect(self.find_by_filter)
 
-    def set_veh_table(self, filter={}):
-        all_veh = self.vehicle_data.get_all_veh(filter=filter)
-        logging.info(all_veh)
+        """Действия при запуске программы"""
+        self.set_veh_table()
+        self.fill_checkbox()
+
+    # Заполынение таблицы траснпорта
+    def set_veh_table(self):
+
+        all_veh = self.vehicle_data.get_all_veh(filter=self.veh_filter)
+        self.ui.veh_table.setRowCount(0)
+        self.ui.veh_table.setRowCount(len(all_veh))
 
         for i, vehicle in enumerate(all_veh):
-            self.ui.veh_table.insertRow(i)
             self.ui.veh_table.setItem(i, 0, QTableWidgetItem(str(vehicle['id'])))
             self.ui.veh_table.setItem(i, 1, QTableWidgetItem(str(vehicle['name'])))
             self.ui.veh_table.setItem(i, 2, QTableWidgetItem(str(self.vehicle_data.status_list[vehicle['status']])))
 
+    # Заполнение таблицы с информацией
     def set_spec_table(self):
 
-        self.ui.spec_table.clear()
+        self.ui.spec_table.setRowCount(0)
         id = self.ui.veh_table.item(self.ui.veh_table.currentItem().row(), 0).text()
         data = self.vehicle_data.get_spec(id=id)
         cols = self.vehicle_data.cols[1:]
         self.ui.spec_table.setRowCount(len(cols))
-        logging.info(f'id: {id}\n' + pformat(data))
 
         for i, col in enumerate(cols):
             self.ui.spec_table.setItem(i, 0, QTableWidgetItem(self.vehicle_data.spec_list.get(col, col)))
-            self.ui.spec_table.setItem(i, 1, QTableWidgetItem(str(data.get(col, i))))
+            item = str(data.get(col, i))
+            self.ui.spec_table.setItem(i, 1, QTableWidgetItem(item if col != 'status' else
+                                                              self.vehicle_data.status_list[int(item)]))
+
+    def fill_checkbox(self):
+
+        cols = self.vehicle_data.cols[1:]
+        for col in cols:
+            if hasattr(self.ui, col+'_v'):
+
+                checkbox = self.ui.__getattribute__(col+'_v')
+                for item in self.vehicle_data.get_uniq_spec(col):
+                    checkbox.addItem(str(item))
+
+    def find_by_filter(self):
+
+        cols = self.vehicle_data.cols[1:]
+        for col in cols:
+            if hasattr(self.ui, col + '_v'):
+                checkbox_v = self.ui.__getattribute__(col + '_v').currentText()
+                if checkbox_v:
+                    self.veh_filter[col] = checkbox_v
+
+        self.set_veh_table()
+        self.veh_filter.clear()
+
+

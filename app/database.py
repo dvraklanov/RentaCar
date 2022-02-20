@@ -27,7 +27,9 @@ class Database(object):
             raise e
 
     # Получить данные
-    def select(self, table: str, items='*', filter={}, unique=False) -> list:
+    def select(self, table: str, items='*', filter=None, unique=False) -> list:
+        if filter is None:
+            filter = {}
         sql = "SELECT {unique}{items} FROM {table} ".format(items=f"{', '.join(items)}",
                                                             table=table,
                                                             unique="DISTINCT " if unique else "")
