@@ -13,9 +13,10 @@ class Vehicles(object):
         self.spec_list = {'name': 'Название модели', 'number_plate': 'Гос. номер',
                           'body_type': 'Тип кузова', 'wheel_drive': 'Тип привода',
                           'fuel_type': 'Тип топлива', 'power_hp': 'Мощность (л.с.)',
-                          'n_seat': 'Кол-во мест', 'gearbox_type': 'КПП',
-                          'rental_price': 'Стоимость аренды (руб./сут.)', 'status': 'Статус',
-                          'leased_from': 'Начало аренды', 'leased_to': 'Окончание аренды'}
+                          'n_seat': 'Кол-во мест', 'gearbox_type': 'Тип КПП',
+                          'rental_price': 'Стоимость (руб./сут.)', 'status': 'Статус',
+                          'leased_from': 'Начало аренды', 'leased_to': 'Окончание аренды',
+                          'cust_id': 'Id арендатора'}
 
         # Возможные состояния транспортного средства
         self.status_list = ['Не доступно', 'Доступно', 'В аренде']

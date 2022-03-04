@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QAbstractItemView
 
 from .ui.ui_main_window import Ui_MainWindow
 from .vehicles import Vehicles
-from .database import Database
+from .database import Database  
 
 
 # Главное окно приложения расширяет класс QWidget
