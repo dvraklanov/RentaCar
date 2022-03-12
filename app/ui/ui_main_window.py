@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'main_window.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.2.3
+## Created by: Qt User Interface Compiler version 6.2.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -184,6 +184,9 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.find_btn)
 
+        self.add_veh_btn = QPushButton(self.centralwidget)
+        self.add_veh_btn.setObjectName(u"add_veh_btn")
+        self.add_veh_btn.setGeometry(QRect(20, 630, 251, 28))
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -225,5 +228,6 @@ class Ui_MainWindow(object):
         self.wheel_drive_v.setItemText(0, "")
 
         self.find_btn.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0439\u0442\u0438", None))
+        self.add_veh_btn.setText(QCoreApplication.translate("MainWindow", u"\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0432 \u0430\u0432\u0442\u043e\u043f\u0430\u0440\u043a", None))
     # retranslateUi
 

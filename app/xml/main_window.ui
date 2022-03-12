@@ -178,7 +178,7 @@
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <layout class="QGridLayout" name="gridLayout" columnstretch="2,3,0">
+      <layout class="QGridLayout" name="gridLayout" columnstretch="2,3">
        <item row="1" column="0">
         <widget class="QLabel" name="wheel_drive_l">
          <property name="text">
@@ -284,6 +284,19 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QPushButton" name="add_veh_btn">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>630</y>
+      <width>251</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Добавить в автопарк</string>
+    </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

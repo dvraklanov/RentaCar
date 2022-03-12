@@ -1,10 +1,8 @@
-import logging
-from pprint import pformat
-
-from PySide6 import QtWidgets
+from PySide6 import QtWidgets, QtCore
 from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QAbstractItemView
 
 from .ui.ui_main_window import Ui_MainWindow
+from .vehicle_form import VehicleForm
 from .vehicles import Vehicles
 from .database import Database  
 
@@ -26,6 +24,8 @@ class MainWindow(QMainWindow):
         self.db = Database("app/data/test_db")
         self.vehicle_data = Vehicles(self.db)
         self.veh_filter = dict()
+        self.veh_form = VehicleForm()
+        self.veh_form.add_form_fields(self.vehicle_data.spec_list)
 
         """Установка доп. параметров интерфейса"""
 
@@ -48,6 +48,7 @@ class MainWindow(QMainWindow):
         """Установка функционала элементов интерфейса"""
         self.ui.veh_table.cellClicked.connect(self.set_spec_table)
         self.ui.find_btn.clicked.connect(self.find_by_filter)
+        self.ui.add_veh_btn.clicked.connect(self.show_veh_form)
 
         """Действия при запуске программы"""
         self.set_veh_table()
@@ -85,7 +86,6 @@ class MainWindow(QMainWindow):
         cols = self.vehicle_data.cols[1:]
         for col in cols:
             if hasattr(self.ui, col+'_v'):
-
                 checkbox = self.ui.__getattribute__(col+'_v')
                 for item in self.vehicle_data.get_uniq_spec(col):
                     checkbox.addItem(str(item))
@@ -101,5 +101,10 @@ class MainWindow(QMainWindow):
 
         self.set_veh_table()
         self.veh_filter.clear()
+
+    def show_veh_form(self):
+        self.veh_form.show()
+
+
 
 
