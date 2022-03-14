@@ -1,10 +1,10 @@
 from PySide6 import QtWidgets, QtCore
+from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QAbstractItemView
-
 from .ui.ui_main_window import Ui_MainWindow
 from .vehicle_form import VehicleForm
 from .vehicles import Vehicles
-from .database import Database  
+from .database import Database
 
 
 # Главное окно приложения расширяет класс QWidget
@@ -24,8 +24,7 @@ class MainWindow(QMainWindow):
         self.db = Database("app/data/test_db")
         self.vehicle_data = Vehicles(self.db)
         self.veh_filter = dict()
-        self.veh_form = VehicleForm()
-        self.veh_form.add_form_fields(self.vehicle_data.spec_list)
+        self.veh_form = VehicleForm(vehicle_db=self.vehicle_data)
 
         """Установка доп. параметров интерфейса"""
 
@@ -48,11 +47,12 @@ class MainWindow(QMainWindow):
         """Установка функционала элементов интерфейса"""
         self.ui.veh_table.cellClicked.connect(self.set_spec_table)
         self.ui.find_btn.clicked.connect(self.find_by_filter)
-        self.ui.add_veh_btn.clicked.connect(self.show_veh_form)
+        self.ui.add_veh_btn.clicked.connect(self.veh_form.show)
+        self.veh_form.form_filled.connect(self.get_veh_form_v)
 
         """Действия при запуске программы"""
         self.set_veh_table()
-        self.fill_checkbox()
+        self.fill_combobox()
 
     # Заполынение таблицы траснпорта
     def set_veh_table(self):
@@ -81,15 +81,17 @@ class MainWindow(QMainWindow):
             self.ui.spec_table.setItem(i, 1, QTableWidgetItem(item if col != 'status' else
                                                               self.vehicle_data.status_list[int(item)]))
 
-    def fill_checkbox(self):
+    # Заполнить опции фильтра
+    def fill_combobox(self):
 
         cols = self.vehicle_data.cols[1:]
         for col in cols:
-            if hasattr(self.ui, col+'_v'):
-                checkbox = self.ui.__getattribute__(col+'_v')
+            if hasattr(self.ui, col + '_v'):
+                checkbox = self.ui.__getattribute__(col + '_v')
                 for item in self.vehicle_data.get_uniq_spec(col):
                     checkbox.addItem(str(item))
 
+    # Поиск по фильтру
     def find_by_filter(self):
 
         cols = self.vehicle_data.cols[1:]
@@ -102,9 +104,9 @@ class MainWindow(QMainWindow):
         self.set_veh_table()
         self.veh_filter.clear()
 
-    def show_veh_form(self):
-        self.veh_form.show()
+    # Показать форму добавление нового авто
+    def get_veh_form_v(self, form: dict, valid: bool):
 
-
-
-
+        if valid:
+            self.vehicle_data.add_veh(form)
+            self.set_veh_table()

@@ -39,14 +39,104 @@
      <number>30</number>
     </property>
     <property name="verticalSpacing">
-     <number>15</number>
+     <number>20</number>
     </property>
     <item row="0" column="0">
-     <widget class="QLabel" name="img">
+     <widget class="QLabel" name="name_l">
+      <property name="text">
+       <string>Модель</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="number_plate_l">
+      <property name="text">
+       <string>Гос. номер</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="body_type_l">
+      <property name="text">
+       <string>Тип кузова</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="wheel_drive_l">
+      <property name="text">
+       <string>Тип привода</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="fuel_type_l">
+      <property name="text">
+       <string>Тип топлива</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="powet_hp_l">
+      <property name="text">
+       <string>Мощность (л.с.)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="n_seat_l">
+      <property name="text">
+       <string>Кол-во мест</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="gearbox_type_l">
+      <property name="text">
+       <string>Тип КПП</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0">
+     <widget class="QLabel" name="rental_price_l">
+      <property name="text">
+       <string>Стоимость (руб./сут.)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="0">
+     <widget class="QLabel" name="img_2">
       <property name="text">
        <string>Изображение</string>
       </property>
      </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="name_v"/>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="number_plate_v"/>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="body_type_v"/>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="wheel_drive_v"/>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLineEdit" name="fuel_type_v"/>
+    </item>
+    <item row="5" column="1">
+     <widget class="QLineEdit" name="power_hp_v"/>
+    </item>
+    <item row="6" column="1">
+     <widget class="QLineEdit" name="n_seat_v"/>
+    </item>
+    <item row="7" column="1">
+     <widget class="QLineEdit" name="gearbox_type_v"/>
+    </item>
+    <item row="8" column="1">
+     <widget class="QLineEdit" name="rental_price_v"/>
     </item>
    </layout>
   </widget>

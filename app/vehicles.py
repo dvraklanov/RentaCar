@@ -10,7 +10,7 @@ class Vehicles(object):
         self.cols = self.__db.get_table_cols(table=self.__table_name)
 
         # Данные требуемые при добавлении автомобиля
-        self.spec_list = {'name': 'Название модели', 'number_plate': 'Гос. номер',
+        self.spec_list = {'name': 'Модель', 'number_plate': 'Гос. номер',
                           'body_type': 'Тип кузова', 'wheel_drive': 'Тип привода',
                           'fuel_type': 'Тип топлива', 'power_hp': 'Мощность (л.с.)',
                           'n_seat': 'Кол-во мест', 'gearbox_type': 'Тип КПП',

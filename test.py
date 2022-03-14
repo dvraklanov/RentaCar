@@ -1,13 +1,24 @@
-from app.parser import CarParser
-from app.vehicles import Vehicles
-from app.database import Database
+import sys
+from PySide6.QtWidgets import QApplication, QPushButton
+from PySide6.QtCore import QObject, Signal, Slot
 
-"""db = Database("app/data/test_db")
-vehicle_data = Vehicles(db)
+app = QApplication(sys.argv)
 
-print(vehicle_data.get_uniq_spec('fuel_type'))"""
 
-"""p = CarParser()
-p.get_page_html("https://www.drom.ru/catalog/bmw/1-series/189129/")
-print(p.html)
-"""
+# define a new slot that receives a string and has
+# 'saySomeWords' as its name
+@Slot(str)
+def say_some_words(words):
+    print(words)
+
+
+class Communicate(QObject):
+    # create a new signal on the fly and name it 'speak'
+    speak = Signal(str)
+
+
+someone = Communicate()
+# connect signal and slot
+someone.speak.connect(say_some_words)
+# emit 'speak' signal
+someone.speak.emit("Hello everybody!")
