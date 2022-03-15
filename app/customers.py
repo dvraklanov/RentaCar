@@ -12,13 +12,10 @@ class Customers(object):
 
     # Получить id и название всех транспортных средств
     def get_all_cust(self, filter={}):
-        return self.__db.select(table=self.__table_name,
-                                items=['id', 'name', 'score'],
-                                filter=filter)
+        return self.__db.select(table=self.__table_name, cols=['id', 'name', 'score'], filter=filter)
 
     def get_cust(self, id: int):
-        return self.__db.select(table=self.__table_name,
-                                filter={'id': id})[0]
+        return self.__db.select(table=self.__table_name, filter={'id': id})[0]
 
     def del_cust(self, id: int):
         self.__db.delete(table=self.__table_name,

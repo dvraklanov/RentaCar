@@ -70,8 +70,8 @@ class MainWindow(QMainWindow):
     def set_spec_table(self):
 
         self.ui.spec_table.setRowCount(0)
-        id = self.ui.veh_table.item(self.ui.veh_table.currentItem().row(), 0).text()
-        data = self.vehicle_data.get_spec(id=id)
+        veh_id = self.ui.veh_table.item(self.ui.veh_table.currentItem().row(), 0).text()
+        data = self.vehicle_data.get_spec(veh_id=veh_id)
         cols = self.vehicle_data.cols[1:]
         self.ui.spec_table.setRowCount(len(cols))
 

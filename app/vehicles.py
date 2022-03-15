@@ -1,3 +1,5 @@
+from typing import NoReturn
+
 from app.database import Database
 
 
@@ -22,37 +24,31 @@ class Vehicles(object):
         self.status_list = ['Не доступно', 'Доступно', 'В аренде']
 
     # Получить id и название всех транспортных средств
-    def get_all_veh(self, filter=None):
-        if filter is None:
-            filter = {}
-        return self.__db.select(table=self.__table_name,
-                                items=['id', 'name', 'status'],
-                                filter=filter)
+    def get_all_veh(self, filter: Database.ItemData = {}) -> Database.ItemsList:
+        return self.__db.select(table=self.__table_name, cols=['id', 'name', 'status'], filter=filter)
 
     # Получить характеристики треанспортного средства по id
-    def get_spec(self, id: int):
-        return self.__db.select(table=self.__table_name,
-                                filter={'id': id})[0]
+    def get_spec(self, veh_id: int) -> Database.ItemsList:
+        return self.__db.select(table=self.__table_name, filter={'id': veh_id})[0]
 
     # Получить уникальные значение столбца характеристики
-    def get_uniq_spec(self, col: str):
-        data = self.__db.select(table=self.__table_name,
-                                items=[col], unique=True)
+    def get_uniq_spec(self, col: str) -> Database.ItemsList:
+        data = self.__db.select(table=self.__table_name, cols=[col], unique=True)
         data_list = [item[col] for item in data]
         return data_list
 
     # Отредактировать значения в существующей записи
-    def edit_spec(self, id: int, new_values: dict):
+    def edit_spec(self, veh_id: int, new_values: Database.ItemData) -> NoReturn:
         self.__db.update(table=self.__table_name,
-                         new_values=new_values, filter={'id': id})
+                         new_values=new_values, filter={'id': veh_id})
 
     # Добавить новое транспортное средство
-    def add_veh(self, veh_data: dict):
+    def add_veh(self, veh_data: dict) -> NoReturn:
         self.__db.insert(table=self.__table_name,
                          cols=list(veh_data.keys()),
                          values=[veh_data[key] for key in veh_data.keys()])
 
     # Удаление транспортного средства по id
-    def del_veh(self, id: int):
+    def del_veh(self, veh_id: int) -> NoReturn:
         self.__db.delete(table=self.__table_name,
-                         filter={'id': id})
+                         filter={'id': veh_id})
