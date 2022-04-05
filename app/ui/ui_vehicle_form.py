@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'vehicle_form.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.2.3
+## Created by: Qt User Interface Compiler version 6.2.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -27,7 +27,7 @@ class Ui_veh_form(object):
         veh_form.setMaximumSize(QSize(460, 500))
         self.formLayoutWidget = QWidget(veh_form)
         self.formLayoutWidget.setObjectName(u"formLayoutWidget")
-        self.formLayoutWidget.setGeometry(QRect(40, 30, 381, 394))
+        self.formLayoutWidget.setGeometry(QRect(40, 30, 381, 408))
         self.formLayout = QFormLayout(self.formLayoutWidget)
         self.formLayout.setObjectName(u"formLayout")
         self.formLayout.setHorizontalSpacing(30)
@@ -78,10 +78,10 @@ class Ui_veh_form(object):
 
         self.formLayout.setWidget(8, QFormLayout.LabelRole, self.rental_price_l)
 
-        self.img_2 = QLabel(self.formLayoutWidget)
-        self.img_2.setObjectName(u"img_2")
+        self.img = QLabel(self.formLayoutWidget)
+        self.img.setObjectName(u"img")
 
-        self.formLayout.setWidget(9, QFormLayout.LabelRole, self.img_2)
+        self.formLayout.setWidget(9, QFormLayout.LabelRole, self.img)
 
         self.name_v = QLineEdit(self.formLayoutWidget)
         self.name_v.setObjectName(u"name_v")
@@ -128,9 +128,14 @@ class Ui_veh_form(object):
 
         self.formLayout.setWidget(8, QFormLayout.FieldRole, self.rental_price_v)
 
+        self.find_img_btn = QPushButton(self.formLayoutWidget)
+        self.find_img_btn.setObjectName(u"find_img_btn")
+
+        self.formLayout.setWidget(9, QFormLayout.FieldRole, self.find_img_btn)
+
         self.add_btn = QPushButton(veh_form)
         self.add_btn.setObjectName(u"add_btn")
-        self.add_btn.setGeometry(QRect(180, 430, 111, 28))
+        self.add_btn.setGeometry(QRect(180, 450, 111, 28))
 
         self.retranslateUi(veh_form)
 
@@ -148,7 +153,8 @@ class Ui_veh_form(object):
         self.n_seat_l.setText(QCoreApplication.translate("veh_form", u"\u041a\u043e\u043b-\u0432\u043e \u043c\u0435\u0441\u0442", None))
         self.gearbox_type_l.setText(QCoreApplication.translate("veh_form", u"\u0422\u0438\u043f \u041a\u041f\u041f", None))
         self.rental_price_l.setText(QCoreApplication.translate("veh_form", u"\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c (\u0440\u0443\u0431./\u0441\u0443\u0442.)", None))
-        self.img_2.setText(QCoreApplication.translate("veh_form", u"\u0418\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435", None))
+        self.img.setText(QCoreApplication.translate("veh_form", u"\u0418\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435", None))
+        self.find_img_btn.setText(QCoreApplication.translate("veh_form", u"\u041e\u0431\u0437\u043e\u0440", None))
         self.add_btn.setText(QCoreApplication.translate("veh_form", u"\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c", None))
     # retranslateUi
 

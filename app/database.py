@@ -23,6 +23,7 @@ class Database(object):
 
     # Подключение к базе
     def connect(self) -> Tuple[sqlite3.Connection, sqlite3.Cursor]:
+
         try:
             conn = sqlite3.connect(self.name)
             cursor = conn.cursor()
@@ -139,6 +140,17 @@ class Database(object):
         try:
             data = self.cursor.execute(sql).fetchall()
             data = list(map(lambda x: x[0], data))
+            logging.debug(sql)
+            return data
+        except (sqlite3.IntegrityError, sqlite3.OperationalError) as e:
+            logging.error(f"\n{e}\nОшибка при отправке SQL. Проверьте запрос:\n{sql}")
+
+    def get_last_added_id(self) -> int:
+
+        sql = "SELECT last_insert_rowid()"
+
+        try:
+            data = self.cursor.execute(sql).fetchone()[0]
             logging.debug(sql)
             return data
         except (sqlite3.IntegrityError, sqlite3.OperationalError) as e:
