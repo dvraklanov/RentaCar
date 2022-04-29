@@ -120,20 +120,11 @@
     <item row="2" column="1">
      <widget class="QLineEdit" name="body_type_v"/>
     </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="wheel_drive_v"/>
-    </item>
-    <item row="4" column="1">
-     <widget class="QLineEdit" name="fuel_type_v"/>
-    </item>
     <item row="5" column="1">
      <widget class="QLineEdit" name="power_hp_v"/>
     </item>
     <item row="6" column="1">
      <widget class="QLineEdit" name="n_seat_v"/>
-    </item>
-    <item row="7" column="1">
-     <widget class="QLineEdit" name="gearbox_type_v"/>
     </item>
     <item row="8" column="1">
      <widget class="QLineEdit" name="rental_price_v"/>
@@ -143,6 +134,68 @@
       <property name="text">
        <string>Обзор</string>
       </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QComboBox" name="wheel_drive_v">
+      <item>
+       <property name="text">
+        <string>Полный</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Передний</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Задний</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QComboBox" name="fuel_type_v">
+      <item>
+       <property name="text">
+        <string>Бензин</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Дизель</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Электро</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Гибрид</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QComboBox" name="gearbox_type_v">
+      <item>
+       <property name="text">
+        <string>Автоматическая</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Ручная</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Роботизированная</string>
+       </property>
+      </item>
      </widget>
     </item>
    </layout>

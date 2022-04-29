@@ -3,7 +3,7 @@ from typing import NoReturn, List, Dict, Callable, Union
 
 from PySide6 import QtGui, QtCore
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QFormLayout, QDialogButtonBox, QDialog, \
-    QFileDialog
+    QFileDialog, QComboBox
 from .ui.ui_vehicle_form import Ui_veh_form
 
 # Форма добавления нового авто
@@ -53,7 +53,7 @@ class VehicleForm(QWidget):
         self.form_values = dict()
         self.form_is_valid = False
 
-        self.file_name: str
+        self.file_name = ""
 
         self.ui.add_btn.clicked.connect(self.get_form_fields)
         self.ui.find_img_btn.clicked.connect(self.show_file_dialog)
@@ -67,18 +67,22 @@ class VehicleForm(QWidget):
         err_msg = ""
         for col in cols:
             if hasattr(self.ui, col + '_v'):
-                txt = self.ui.__getattribute__(col + '_v').text()
-                validator = self.valid_params[col]['func'] if col in self.valid_params else lambda x: True
-                if txt:
-                    if not validator(txt):
-                        err = True
-                        err_msg = self.valid_params[col].get('msg', 'Ошибка!')
-                        break
-                    self.form_values[col] = txt
+                field = self.ui.__getattribute__(col + '_v')
+                if type(field) == QComboBox:
+                    txt = field.currentText()
                 else:
-                    err = True
-                    err_msg = "Все поля должны быть заполнены!"
-                    break
+                    txt = field.text()
+                    validator = self.valid_params[col]['func'] if col in self.valid_params else lambda x: True
+                    if txt:
+                        if not validator(txt):
+                            err = True
+                            err_msg = self.valid_params[col].get('msg', 'Ошибка!')
+                            break
+                    else:
+                        err = True
+                        err_msg = "Все поля должны быть заполнены!"
+                        break
+                self.form_values[col] = txt
 
         dlg = self.AddDialog()
 
@@ -90,8 +94,9 @@ class VehicleForm(QWidget):
             logging.debug(f"Retry input data.\n{self.form_values}")
 
     def show_file_dialog(self):
+
         self.file_name, _ = QFileDialog.getOpenFileName(self, 'Open file',
-                                                        None, 'Image (*.png *.jpg)')
+                                                        None, 'Image (*.jpg)')
 
         self.ui.find_img_btn.setText(self.file_name.split("/")[-1])
 

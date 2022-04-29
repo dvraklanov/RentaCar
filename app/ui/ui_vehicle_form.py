@@ -15,8 +15,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFormLayout, QLabel, QLineEdit,
-    QPushButton, QSizePolicy, QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QFormLayout, QLabel,
+    QLineEdit, QPushButton, QSizePolicy, QWidget)
 
 class Ui_veh_form(object):
     def setupUi(self, veh_form):
@@ -98,16 +98,6 @@ class Ui_veh_form(object):
 
         self.formLayout.setWidget(2, QFormLayout.FieldRole, self.body_type_v)
 
-        self.wheel_drive_v = QLineEdit(self.formLayoutWidget)
-        self.wheel_drive_v.setObjectName(u"wheel_drive_v")
-
-        self.formLayout.setWidget(3, QFormLayout.FieldRole, self.wheel_drive_v)
-
-        self.fuel_type_v = QLineEdit(self.formLayoutWidget)
-        self.fuel_type_v.setObjectName(u"fuel_type_v")
-
-        self.formLayout.setWidget(4, QFormLayout.FieldRole, self.fuel_type_v)
-
         self.power_hp_v = QLineEdit(self.formLayoutWidget)
         self.power_hp_v.setObjectName(u"power_hp_v")
 
@@ -118,11 +108,6 @@ class Ui_veh_form(object):
 
         self.formLayout.setWidget(6, QFormLayout.FieldRole, self.n_seat_v)
 
-        self.gearbox_type_v = QLineEdit(self.formLayoutWidget)
-        self.gearbox_type_v.setObjectName(u"gearbox_type_v")
-
-        self.formLayout.setWidget(7, QFormLayout.FieldRole, self.gearbox_type_v)
-
         self.rental_price_v = QLineEdit(self.formLayoutWidget)
         self.rental_price_v.setObjectName(u"rental_price_v")
 
@@ -132,6 +117,31 @@ class Ui_veh_form(object):
         self.find_img_btn.setObjectName(u"find_img_btn")
 
         self.formLayout.setWidget(9, QFormLayout.FieldRole, self.find_img_btn)
+
+        self.wheel_drive_v = QComboBox(self.formLayoutWidget)
+        self.wheel_drive_v.addItem("")
+        self.wheel_drive_v.addItem("")
+        self.wheel_drive_v.addItem("")
+        self.wheel_drive_v.setObjectName(u"wheel_drive_v")
+
+        self.formLayout.setWidget(3, QFormLayout.FieldRole, self.wheel_drive_v)
+
+        self.fuel_type_v = QComboBox(self.formLayoutWidget)
+        self.fuel_type_v.addItem("")
+        self.fuel_type_v.addItem("")
+        self.fuel_type_v.addItem("")
+        self.fuel_type_v.addItem("")
+        self.fuel_type_v.setObjectName(u"fuel_type_v")
+
+        self.formLayout.setWidget(4, QFormLayout.FieldRole, self.fuel_type_v)
+
+        self.gearbox_type_v = QComboBox(self.formLayoutWidget)
+        self.gearbox_type_v.addItem("")
+        self.gearbox_type_v.addItem("")
+        self.gearbox_type_v.addItem("")
+        self.gearbox_type_v.setObjectName(u"gearbox_type_v")
+
+        self.formLayout.setWidget(7, QFormLayout.FieldRole, self.gearbox_type_v)
 
         self.add_btn = QPushButton(veh_form)
         self.add_btn.setObjectName(u"add_btn")
@@ -155,6 +165,19 @@ class Ui_veh_form(object):
         self.rental_price_l.setText(QCoreApplication.translate("veh_form", u"\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c (\u0440\u0443\u0431./\u0441\u0443\u0442.)", None))
         self.img.setText(QCoreApplication.translate("veh_form", u"\u0418\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435", None))
         self.find_img_btn.setText(QCoreApplication.translate("veh_form", u"\u041e\u0431\u0437\u043e\u0440", None))
+        self.wheel_drive_v.setItemText(0, QCoreApplication.translate("veh_form", u"\u041f\u043e\u043b\u043d\u044b\u0439", None))
+        self.wheel_drive_v.setItemText(1, QCoreApplication.translate("veh_form", u"\u041f\u0435\u0440\u0435\u0434\u043d\u0438\u0439", None))
+        self.wheel_drive_v.setItemText(2, QCoreApplication.translate("veh_form", u"\u0417\u0430\u0434\u043d\u0438\u0439", None))
+
+        self.fuel_type_v.setItemText(0, QCoreApplication.translate("veh_form", u"\u0411\u0435\u043d\u0437\u0438\u043d", None))
+        self.fuel_type_v.setItemText(1, QCoreApplication.translate("veh_form", u"\u0414\u0438\u0437\u0435\u043b\u044c", None))
+        self.fuel_type_v.setItemText(2, QCoreApplication.translate("veh_form", u"\u042d\u043b\u0435\u043a\u0442\u0440\u043e", None))
+        self.fuel_type_v.setItemText(3, QCoreApplication.translate("veh_form", u"\u0413\u0438\u0431\u0440\u0438\u0434", None))
+
+        self.gearbox_type_v.setItemText(0, QCoreApplication.translate("veh_form", u"\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f", None))
+        self.gearbox_type_v.setItemText(1, QCoreApplication.translate("veh_form", u"\u0420\u0443\u0447\u043d\u0430\u044f", None))
+        self.gearbox_type_v.setItemText(2, QCoreApplication.translate("veh_form", u"\u0420\u043e\u0431\u043e\u0442\u0438\u0437\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u0430\u044f", None))
+
         self.add_btn.setText(QCoreApplication.translate("veh_form", u"\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c", None))
     # retranslateUi
 

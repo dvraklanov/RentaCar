@@ -59,9 +59,11 @@ class MainWindow(QMainWindow):
         self.ui.veh_table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.ui.spec_table.setSelectionBehavior(QAbstractItemView.SelectRows)
 
-        # Установка ширины отдельных колонок таблицы
-        self.ui.veh_table.setColumnWidth(0, 15)
-        self.ui.veh_table.setColumnWidth(1, 180)
+        # Установка ширины отдельных колонок таблиц автомобилей и характеристик
+        self.ui.veh_table.setColumnWidth(0, 45)
+        self.ui.veh_table.setColumnWidth(1, 150)
+
+        self.ui.spec_table.setColumnWidth(0, 200)
 
         """Установка функционала элементов интерфейса"""
         self.ui.veh_table.cellClicked.connect(self.set_spec_table)
@@ -97,7 +99,7 @@ class MainWindow(QMainWindow):
         # Если существует картинка, до загрузить ее
         self.ui.img_box.clear()
         img_path = f"app/data/img/{veh_id}.jpg"
-        if os.path.exists(img_path):
+        if os.path.exists(img_path) and os.path.isfile(img_path):
             veh_img = QPixmap(img_path)
             veh_img = veh_img.scaledToHeight(self.ui.img_box.height())
             self.ui.img_box.setPixmap(veh_img)
@@ -139,5 +141,7 @@ class MainWindow(QMainWindow):
         if valid:
             self.vehicle_data.add_veh(form)
             file = self.veh_form.file_name
-            shutil.copy2(file, f"app/data/img/{self.vehicle_data.db.get_last_added_id()}.{file.split('.')[-1]}")
+            if file:
+                shutil.copy2(file, f"app/data/img/{self.vehicle_data.db.get_last_added_id()}.{file.split('.')[-1]}")
             self.set_veh_table()
+            self.fill_combobox()
