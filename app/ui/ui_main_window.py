@@ -195,15 +195,38 @@ class Ui_MainWindow(object):
         self.spec_table.setHorizontalHeaderItem(0, __qtablewidgetitem3)
         __qtablewidgetitem4 = QTableWidgetItem()
         self.spec_table.setHorizontalHeaderItem(1, __qtablewidgetitem4)
+        if (self.spec_table.rowCount() < 1):
+            self.spec_table.setRowCount(1)
+        __qtablewidgetitem5 = QTableWidgetItem()
+        self.spec_table.setVerticalHeaderItem(0, __qtablewidgetitem5)
         self.spec_table.setObjectName(u"spec_table")
         self.spec_table.horizontalHeader().setVisible(False)
-        self.spec_table.horizontalHeader().setDefaultSectionSize(60)
+        self.spec_table.horizontalHeader().setDefaultSectionSize(200)
         self.spec_table.horizontalHeader().setStretchLastSection(True)
         self.spec_table.verticalHeader().setVisible(False)
 
         self.verticalLayout_2.addWidget(self.spec_table)
 
-        self.verticalLayout_2.setStretch(0, 3)
+        self.horizontalLayout_3 = QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.msg_box = QLabel(self.horizontalLayoutWidget)
+        self.msg_box.setObjectName(u"msg_box")
+
+        self.horizontalLayout_3.addWidget(self.msg_box)
+
+        self.delete_btn = QPushButton(self.horizontalLayoutWidget)
+        self.delete_btn.setObjectName(u"delete_btn")
+
+        self.horizontalLayout_3.addWidget(self.delete_btn)
+
+        self.horizontalLayout_3.setStretch(0, 3)
+        self.horizontalLayout_3.setStretch(1, 1)
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_3)
+
+        self.verticalLayout_2.setStretch(0, 10)
+        self.verticalLayout_2.setStretch(1, 6)
+        self.verticalLayout_2.setStretch(2, 1)
 
         self.verticalLayout.addLayout(self.verticalLayout_2)
 
@@ -257,5 +280,9 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"name", None));
         ___qtablewidgetitem4 = self.spec_table.horizontalHeaderItem(1)
         ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"value", None));
+        ___qtablewidgetitem5 = self.spec_table.verticalHeaderItem(0)
+        ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
+        self.msg_box.setText(QCoreApplication.translate("MainWindow", u"", None))
+        self.delete_btn.setText(QCoreApplication.translate("MainWindow", u"\u0423\u0434\u0430\u043b\u0438\u0442\u044c", None))
     # retranslateUi
 

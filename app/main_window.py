@@ -6,7 +6,7 @@ from typing import NoReturn
 
 from PySide6 import QtWidgets, QtCore
 from PySide6.QtGui import QCloseEvent, QPixmap
-from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QAbstractItemView
+from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QAbstractItemView,  QMessageBox
 from .ui.ui_main_window import Ui_MainWindow
 from .vehicle_form import VehicleForm
 from .vehicles import Vehicles
@@ -31,17 +31,18 @@ class MainWindow(QMainWindow):
         self.vehicle_data = Vehicles(self.db)
         self.veh_filter = dict()
 
-        self.veh_form_valid = {"number_plate": {"func": lambda x: x not in self.vehicle_data.get_uniq_spec("number_plate"),
-                                                "msg": "Автомобиль с введеным гос. номером уже существует в базе."},
-                               "n_seat": {"func": lambda x: x.isdigit(),
-                                          "msg": f"{self.vehicle_data.spec_dict['n_seat']} должно быть числом"},
-                               "power_hp": {"func": lambda x: x.isdigit(),
-                                            "msg": f"{self.vehicle_data.spec_dict['power_hp']} должно быть числом"},
-                               "name": {"func": lambda x: not x.isdigit(),
-                                        "msg": "Введите корректное название авто."},
-                               "rental_price": {"func": lambda x: x.isdigit(),
-                                                "msg": f"{self.vehicle_data.spec_dict['rental_price']} должно быть числом"}
-                               }
+        self.veh_form_valid = {
+            "number_plate": {"func": lambda x: x not in self.vehicle_data.get_uniq_spec("number_plate"),
+                             "msg": "Автомобиль с введеным гос. номером уже существует в базе."},
+            "n_seat": {"func": lambda x: x.isdigit(),
+                       "msg": f"{self.vehicle_data.spec_dict['n_seat']} должно быть числом"},
+            "power_hp": {"func": lambda x: x.isdigit(),
+                         "msg": f"{self.vehicle_data.spec_dict['power_hp']} должно быть чи   слом"},
+            "name": {"func": lambda x: not x.isdigit(),
+                     "msg": "Введите корректное название авто."},
+            "rental_price": {"func": lambda x: x.isdigit(),
+                             "msg": f"{self.vehicle_data.spec_dict['rental_price']} должно быть числом"}
+            }
         self.veh_form = VehicleForm(vehicle_db=self.vehicle_data, valid_params=self.veh_form_valid)
 
         """Установка доп. параметров интерфейса"""
@@ -68,6 +69,7 @@ class MainWindow(QMainWindow):
         self.ui.veh_table.cellClicked.connect(self.set_spec_table)
         self.ui.find_btn.clicked.connect(self.find_by_filter)
         self.ui.add_veh_btn.clicked.connect(self.veh_form.show)
+        self.ui.delete_btn.clicked.connect(self.del_veh)
         self.veh_form.FormFilled.connect(self.get_veh_form_v)
 
         """Действия при запуске программы"""
@@ -103,7 +105,7 @@ class MainWindow(QMainWindow):
             veh_img = veh_img.scaledToHeight(self.ui.img_box.height())
             self.ui.img_box.setPixmap(veh_img)
         else:
-            logging.debug(f"Can't find img file for veh (id ={veh_id})")
+            logging.debug(f"Can't find img file for veh ({veh_id=})")
 
         for i, col in enumerate(cols):
             self.ui.spec_table.setItem(i, 0, QTableWidgetItem(self.vehicle_data.spec_dict.get(col, col)))
@@ -144,3 +146,19 @@ class MainWindow(QMainWindow):
                 shutil.copy2(file, f"app/data/img/{self.vehicle_data.db.get_last_added_id()}.{file.split('.')[-1]}")
             self.set_veh_table()
             self.fill_combobox()
+
+    def del_veh(self) -> NoReturn:
+
+        cur_item = self.ui.veh_table.currentItem()
+        if cur_item:
+            veh_id = self.ui.veh_table.item(cur_item.row(), 0).text()
+            button = QMessageBox.question(self, "Удаление авто",
+                                          "Вы действительно хотите удалить автомобиль из базы данных?")
+
+            if button == QMessageBox.Yes:
+                self.vehicle_data.del_veh(veh_id=veh_id)
+                self.ui.spec_table.setRowCount(0)
+                self.ui.img_box.clear()
+                self.set_veh_table()
+                self.fill_combobox()
+
