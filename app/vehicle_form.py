@@ -11,7 +11,7 @@ from .vehicles import Vehicles
 
 
 class VehicleForm(QWidget):
-    FormFilled = QtCore.Signal(dict, bool)
+    VehicleFormFilled = QtCore.Signal(dict, bool)
 
     # Диалог при добавлении нового авто
     class AddDialog(QDialog):
@@ -62,7 +62,7 @@ class VehicleForm(QWidget):
         # Добавить класс валидатора и регулярные выражения для остальных полей
 
     # Получить значения полей формы
-    def get_form_fields(self) -> NoReturn:
+    def get_form_fields(self):
 
         cols = self.vehicle_db.cols[1:]
         err = False
@@ -105,7 +105,7 @@ class VehicleForm(QWidget):
     # Перегрузка метода, вызывающемся при закрытии формы
     def closeEvent(self, event: QtGui.QCloseEvent) -> None:
 
-        self.FormFilled.emit(self.form_values, self.form_is_valid)
+        self.VehicleFormFilled.emit(self.form_values, self.form_is_valid)
         cols = self.vehicle_db.cols[1:]
 
         for col in cols:

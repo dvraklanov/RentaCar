@@ -1,5 +1,3 @@
-from typing import NoReturn
-
 from app.database import Database
 
 
@@ -24,7 +22,9 @@ class Vehicles(object):
         self.status_list = ['Не доступно', 'Доступно', 'В аренде']
 
     # Получить id и название всех транспортных средств
-    def get_all_veh(self, filter: Database.ItemData = {}) -> Database.ItemsList:
+    def get_all_veh(self, filter=None) -> Database.ItemsList:
+        if filter is None:
+            filter = {}
         return self.db.select(table=self._table_name, cols=['id', 'name', 'status'], filter=filter)
 
     # Получить характеристики треанспортного средства по id
@@ -38,17 +38,17 @@ class Vehicles(object):
         return data_list
 
     # Отредактировать значения в существующей записи
-    def edit_spec(self, veh_id: int, new_values: Database.ItemData) -> NoReturn:
+    def edit_spec(self, veh_id: int, new_values: Database.ItemData):
         self.db.update(table=self._table_name,
                        new_values=new_values, filter={'id': veh_id})
 
     # Добавить новое транспортное средство
-    def add_veh(self, veh_data: dict) -> NoReturn:
+    def add_veh(self, veh_data: dict):
         self.db.insert(table=self._table_name,
                        cols=list(veh_data.keys()),
                        values=[veh_data[key] for key in veh_data.keys()])
 
     # Удаление транспортного средства по id
-    def del_veh(self, veh_id: int) -> NoReturn:
+    def del_veh(self, veh_id: int):
         self.db.delete(table=self._table_name,
                        filter={'id': veh_id})

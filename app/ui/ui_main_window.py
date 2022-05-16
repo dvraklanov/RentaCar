@@ -37,12 +37,12 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_2 = QGridLayout()
         self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.label_10 = QLabel(self.horizontalLayoutWidget)
-        self.label_10.setObjectName(u"label_10")
-        self.label_10.setStyleSheet(u"font: 14pt \"Segoe UI\";")
-        self.label_10.setAlignment(Qt.AlignCenter)
+        self.filter_label = QLabel(self.horizontalLayoutWidget)
+        self.filter_label.setObjectName(u"filter_label")
+        self.filter_label.setStyleSheet(u"font: 14pt \"Segoe UI\";")
+        self.filter_label.setAlignment(Qt.AlignCenter)
 
-        self.gridLayout_2.addWidget(self.label_10, 0, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.filter_label, 0, 0, 1, 1)
 
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
@@ -136,12 +136,12 @@ class Ui_MainWindow(object):
 
         self.gridLayout_2.addWidget(self.veh_table, 4, 0, 1, 1)
 
-        self.label = QLabel(self.horizontalLayoutWidget)
-        self.label.setObjectName(u"label")
-        self.label.setStyleSheet(u"font: 14pt \"Segoe UI\";")
-        self.label.setAlignment(Qt.AlignCenter)
+        self.veh_table_label = QLabel(self.horizontalLayoutWidget)
+        self.veh_table_label.setObjectName(u"veh_table_label")
+        self.veh_table_label.setStyleSheet(u"font: 14pt \"Segoe UI\";")
+        self.veh_table_label.setAlignment(Qt.AlignCenter)
 
-        self.gridLayout_2.addWidget(self.label, 3, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.veh_table_label, 3, 0, 1, 1)
 
         self.add_veh_btn = QPushButton(self.horizontalLayoutWidget)
         self.add_veh_btn.setObjectName(u"add_veh_btn")
@@ -214,13 +214,21 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3.addWidget(self.msg_box)
 
+        self.new_rent_btn = QPushButton(self.horizontalLayoutWidget)
+        self.new_rent_btn.setObjectName(u"new_rent_btn")
+        self.new_rent_btn.setEnabled(False)
+
+        self.horizontalLayout_3.addWidget(self.new_rent_btn)
+
         self.delete_btn = QPushButton(self.horizontalLayoutWidget)
         self.delete_btn.setObjectName(u"delete_btn")
+        self.delete_btn.setEnabled(False)
 
         self.horizontalLayout_3.addWidget(self.delete_btn)
 
         self.horizontalLayout_3.setStretch(0, 3)
         self.horizontalLayout_3.setStretch(1, 1)
+        self.horizontalLayout_3.setStretch(2, 1)
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_3)
 
@@ -249,7 +257,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.label_10.setText(QCoreApplication.translate("MainWindow", u"\u0424\u0438\u043b\u044c\u0442\u0440 \u043f\u043e\u0438\u0441\u043a\u0430", None))
+        self.filter_label.setText(QCoreApplication.translate("MainWindow", u"\u0424\u0438\u043b\u044c\u0442\u0440 \u043f\u043e\u0438\u0441\u043a\u0430", None))
         self.gearbox_type_l.setText(QCoreApplication.translate("MainWindow", u"\u041a\u041f\u041f", None))
         self.wheel_drive_l.setText(QCoreApplication.translate("MainWindow", u"\u0422\u0438\u043f \u043f\u0440\u0438\u0432\u043e\u0434\u0430", None))
         self.gearbox_type_v.setItemText(0, "")
@@ -271,7 +279,7 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"\u041c\u043e\u0434\u0435\u043b\u044c", None));
         ___qtablewidgetitem2 = self.veh_table.horizontalHeaderItem(2)
         ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"\u0421\u0442\u0430\u0442\u0443\u0441", None));
-        self.label.setText(QCoreApplication.translate("MainWindow", u"\u0410\u0432\u0442\u043e\u043f\u0430\u0440\u043a", None))
+        self.veh_table_label.setText(QCoreApplication.translate("MainWindow", u"\u0410\u0432\u0442\u043e\u043f\u0430\u0440\u043a", None))
         self.add_veh_btn.setText(QCoreApplication.translate("MainWindow", u"\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0432 \u0430\u0432\u0442\u043e\u043f\u0430\u0440\u043a", None))
         self.find_btn.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0439\u0442\u0438", None))
         self.label_11.setText(QCoreApplication.translate("MainWindow", u" \u0418\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u044f", None))
@@ -282,7 +290,8 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"value", None));
         ___qtablewidgetitem5 = self.spec_table.verticalHeaderItem(0)
         ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        self.msg_box.setText(QCoreApplication.translate("MainWindow", u"", None))
+        self.msg_box.setText("")
+        self.new_rent_btn.setText(QCoreApplication.translate("MainWindow", u"\u0410\u0440\u0435\u043d\u0434\u0430", None))
         self.delete_btn.setText(QCoreApplication.translate("MainWindow", u"\u0423\u0434\u0430\u043b\u0438\u0442\u044c", None))
     # retranslateUi
 

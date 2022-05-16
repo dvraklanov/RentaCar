@@ -39,7 +39,7 @@
      <item>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
-        <widget class="QLabel" name="label_10">
+        <widget class="QLabel" name="filter_label">
          <property name="styleSheet">
           <string notr="true">font: 14pt &quot;Segoe UI&quot;;</string>
          </property>
@@ -206,7 +206,7 @@
         </widget>
        </item>
        <item row="3" column="0">
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="veh_table_label">
          <property name="styleSheet">
           <string notr="true">font: 14pt &quot;Segoe UI&quot;;</string>
          </property>
@@ -323,7 +323,7 @@
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="3,1">
+          <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="3,1,1">
            <item>
             <widget class="QLabel" name="msg_box">
              <property name="text">
@@ -332,7 +332,20 @@
             </widget>
            </item>
            <item>
+            <widget class="QPushButton" name="new_rent_btn">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Аренда</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QPushButton" name="delete_btn">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Удалить</string>
              </property>

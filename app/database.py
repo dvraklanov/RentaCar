@@ -33,9 +33,11 @@ class Database(object):
             raise e
 
     # Получить данные
-    def select(self, table: str, filter: ItemData = {}, cols: ColName = (), unique: bool = False)\
+    def select(self, table: str, filter=None, cols: ColName = (), unique: bool = False)\
             -> ItemsList:
 
+        if filter is None:
+            filter = {}
         if not cols:
             cols = '*'
 
@@ -155,3 +157,4 @@ class Database(object):
             return data
         except (sqlite3.IntegrityError, sqlite3.OperationalError) as e:
             logging.error(f"\n{e}\nОшибка при отправке SQL. Проверьте запрос:\n{sql}")
+
