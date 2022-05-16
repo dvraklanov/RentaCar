@@ -131,3 +131,4 @@ dmypy.json
 .idea
 *.db
 !test_db.db
+img/

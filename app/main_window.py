@@ -31,7 +31,6 @@ class MainWindow(QMainWindow):
         self.vehicle_data = Vehicles(self.db)
         self.veh_filter = dict()
 
-        # Уже лучше, но все еще валидация говна. Избавиться от словаря
         self.veh_form_valid = {"number_plate": {"func": lambda x: x not in self.vehicle_data.get_uniq_spec("number_plate"),
                                                 "msg": "Автомобиль с введеным гос. номером уже существует в базе."},
                                "n_seat": {"func": lambda x: x.isdigit(),

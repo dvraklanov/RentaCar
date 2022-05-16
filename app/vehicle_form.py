@@ -42,8 +42,10 @@ class VehicleForm(QWidget):
             self.setLayout(layout)
             return self.exec_()
 
-    def __init__(self, vehicle_db: Vehicles, valid_params: Dict[str, Dict[str, Union[str, Callable]]] = {}):
+    def __init__(self, vehicle_db: Vehicles, valid_params=None):
         super(VehicleForm, self).__init__()
+        if valid_params is None:
+            valid_params = {}
         self.valid_params = valid_params
         self.ui = Ui_veh_form()
         self.ui.setupUi(self)
