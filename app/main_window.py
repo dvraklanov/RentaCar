@@ -2,16 +2,16 @@ import os
 import logging
 import shutil
 
-from PySide6 import QtWidgets, QtCore
-from PySide6.QtGui import QCloseEvent, QPixmap
-from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QAbstractItemView,  QMessageBox
+from PySide6 import QtWidgets
+from PySide6.QtGui import QPixmap
+from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QAbstractItemView, QMessageBox
 from .ui.ui_main_window import Ui_MainWindow
 
 from .database import Database
 from .vehicles import Vehicles
 from .customers import Customers
-from .vehicle_form import VehicleForm
-from .rent_form import RentForm
+from .forms.vehicle_form import VehicleForm
+from .forms.rent_form import RentForm
 
 
 # Главное окно приложения расширяет класс QWidget
@@ -45,7 +45,7 @@ class MainWindow(QMainWindow):
                      "msg": "Введите корректное название авто."},
             "rental_price": {"func": lambda x: x.isdigit(),
                              "msg": f"{self.vehicle_data.spec_dict['rental_price']} должно быть числом"}
-            }
+        }
         self.veh_form = VehicleForm(vehicle_db=self.vehicle_data, valid_params=self.veh_form_valid)
 
         self.rent_form = RentForm(vehicle_db=self.vehicle_data, customer_db=self.customers_data)
@@ -77,6 +77,7 @@ class MainWindow(QMainWindow):
         self.ui.new_rent_btn.clicked.connect(self.rent_form_show)
         self.ui.delete_btn.clicked.connect(self.del_veh)
         self.veh_form.VehicleFormFilled.connect(self.get_veh_form_v)
+        self.rent_form.RentFormFilled.connect(self.rent_form_close)
 
         """Действия при запуске программы"""
         self.reset_ui()
@@ -101,7 +102,7 @@ class MainWindow(QMainWindow):
         self.ui.spec_table.setRowCount(0)
         self.cur_item = self.ui.veh_table.currentItem()
         veh_id = self.ui.veh_table.item(self.cur_item.row(), 0).text()
-        data = self.vehicle_data.get_spec(veh_id=veh_id)
+        veh_data = self.vehicle_data.get_spec(veh_id=veh_id)
         cols = self.vehicle_data.cols[1:]
         self.ui.spec_table.setRowCount(len(cols))
 
@@ -117,7 +118,7 @@ class MainWindow(QMainWindow):
 
         for i, col in enumerate(cols):
             self.ui.spec_table.setItem(i, 0, QTableWidgetItem(self.vehicle_data.spec_dict.get(col, col)))
-            item = str(data.get(col, i))
+            item = str(veh_data.get(col, i))
             self.ui.spec_table.setItem(i, 1, QTableWidgetItem(item if col != 'status' else
                                                               self.vehicle_data.status_list[int(item)]))
 
@@ -155,11 +156,15 @@ class MainWindow(QMainWindow):
 
             self.reset_ui()
 
+    # Сборосить интерфейс (обновить таблицу авто, фильтр, сбросить окно данных об авто)
     def reset_ui(self):
+
         self.ui.spec_table.setRowCount(0)
         self.ui.img_box.clear()
+
         self.set_veh_table()
         self.fill_combobox()
+
         self.ui.delete_btn.setEnabled(False)
         self.ui.new_rent_btn.setEnabled(False)
 
@@ -168,15 +173,21 @@ class MainWindow(QMainWindow):
 
         if self.cur_item:
             veh_id = self.ui.veh_table.item(self.cur_item.row(), 0).text()
-            button = QMessageBox.question(self, "Удаление авто",
+            is_del = QMessageBox.question(self, "Удаление авто",
                                           "Вы действительно хотите удалить автомобиль из базы данных?")
 
-            if button == QMessageBox.Yes:
+            if is_del == QMessageBox.Yes:
                 self.vehicle_data.del_veh(veh_id=veh_id)
                 self.reset_ui()
 
+    # Показать форму аренды
     def rent_form_show(self):
         if self.cur_item:
             self.rent_form.veh_id = self.ui.veh_table.item(self.ui.veh_table.currentItem().row(), 0).text()
             self.rent_form.show()
+            self.rent_form.set_cust_table()
 
+    # Сброс после закрытия формы аренды
+    def rent_form_close(self, is_valid: bool):
+        if is_valid:
+            self.reset_ui()

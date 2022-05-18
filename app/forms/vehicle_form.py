@@ -4,10 +4,10 @@ from typing import NoReturn, List, Dict, Callable, Union
 from PySide6 import QtGui, QtCore
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QFormLayout, QDialogButtonBox, QDialog, \
     QFileDialog, QComboBox
-from .ui.ui_vehicle_form import Ui_veh_form
+from app.ui.ui_vehicle_form import Ui_veh_form
 
 # Форма добавления нового авто
-from .vehicles import Vehicles
+from app.vehicles import Vehicles
 
 
 class VehicleForm(QWidget):

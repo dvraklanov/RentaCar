@@ -53,6 +53,16 @@ class Ui_rent_form(object):
         self.formLayout = QFormLayout()
         self.formLayout.setObjectName(u"formLayout")
         self.formLayout.setVerticalSpacing(20)
+        self.new_cust_l = QLabel(self.horizontalLayoutWidget)
+        self.new_cust_l.setObjectName(u"new_cust_l")
+
+        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.new_cust_l)
+
+        self.new_cust_v = QRadioButton(self.horizontalLayoutWidget)
+        self.new_cust_v.setObjectName(u"new_cust_v")
+
+        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.new_cust_v)
+
         self.name_l = QLabel(self.horizontalLayoutWidget)
         self.name_l.setObjectName(u"name_l")
 
@@ -122,21 +132,17 @@ class Ui_rent_form(object):
 
         self.formLayout.setWidget(7, QFormLayout.FieldRole, self.add_rent_btn)
 
-        self.new_cust_v = QRadioButton(self.horizontalLayoutWidget)
-        self.new_cust_v.setObjectName(u"new_cust_v")
-
-        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.new_cust_v)
-
-        self.new_cust_l = QLabel(self.horizontalLayoutWidget)
-        self.new_cust_l.setObjectName(u"new_cust_l")
-
-        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.new_cust_l)
-
 
         self.verticalLayout.addLayout(self.formLayout)
 
+        self.msg_box = QLabel(self.horizontalLayoutWidget)
+        self.msg_box.setObjectName(u"msg_box")
+
+        self.verticalLayout.addWidget(self.msg_box)
+
         self.verticalLayout.setStretch(0, 1)
         self.verticalLayout.setStretch(1, 10)
+        self.verticalLayout.setStretch(2, 22)
 
         self.horizontalLayout.addLayout(self.verticalLayout)
 
@@ -181,6 +187,8 @@ class Ui_rent_form(object):
     def retranslateUi(self, rent_form):
         rent_form.setWindowTitle(QCoreApplication.translate("rent_form", u"Form", None))
         self.rent_label.setText(QCoreApplication.translate("rent_form", u"\u0424\u043e\u0440\u043c\u0430 \u043d\u043e\u0432\u043e\u0433\u043e \u0434\u043e\u0433\u043e\u0432\u043e\u0440\u0430 \u0430\u0440\u0435\u043d\u0434\u044b", None))
+        self.new_cust_l.setText(QCoreApplication.translate("rent_form", u"\u041d\u043e\u0432\u044b\u0439 \u043a\u043b\u0438\u0435\u043d\u0442?", None))
+        self.new_cust_v.setText("")
         self.name_l.setText(QCoreApplication.translate("rent_form", u"\u0418\u043c\u044f", None))
         self.lastname_l.setText(QCoreApplication.translate("rent_form", u"\u0424\u0430\u043c\u0438\u043b\u0438\u044f", None))
         self.surname_l.setText(QCoreApplication.translate("rent_form", u"\u041e\u0442\u0447\u0435\u0441\u0442\u0432\u043e", None))
@@ -188,12 +196,4 @@ class Ui_rent_form(object):
         self.start_date_l.setText(QCoreApplication.translate("rent_form", u"\u041d\u0430\u0447\u0430\u043b\u043e \u0430\u0440\u0435\u043d\u0434\u044b", None))
         self.end_date_l.setText(QCoreApplication.translate("rent_form", u"\u041e\u043a\u043e\u043d\u0447\u0430\u043d\u0438\u0435 \u0430\u0440\u0435\u043d\u0434\u044b", None))
         self.add_rent_btn.setText(QCoreApplication.translate("rent_form", u"\u0413\u043e\u0442\u043e\u0432\u043e", None))
-        self.new_cust_v.setText("")
-        self.new_cust_l.setText(QCoreApplication.translate("rent_form", u"\u041d\u043e\u0432\u044b\u0439 \u043a\u043b\u0438\u0435\u043d\u0442?", None))
-        self.cust_table_lable.setText(QCoreApplication.translate("rent_form", u"\u0411\u0430\u0437\u0430 \u0434\u0430\u043d\u043d\u044b\u0445 \u043a\u043b\u0438\u0435\u043d\u0442\u043e\u0432", None))
-        ___qtablewidgetitem = self.cust_table.horizontalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("rent_form", u"ID", None));
-        ___qtablewidgetitem1 = self.cust_table.horizontalHeaderItem(1)
-        ___qtablewidgetitem1.setText(QCoreApplication.translate("rent_form", u"\u0424\u0418\u041e", None));
-    # retranslateUi
-
+        self.msg_box.setText("")
