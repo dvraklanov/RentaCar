@@ -56,9 +56,9 @@ class RentForm(QWidget):
 
     # Включение или отключение добавление нового клиента
     def new_cust_enable(self):
-        flag = False
+        is_new_cust = False
         if self.ui.new_cust_v.isChecked():
-            flag = True
+            is_new_cust = True
 
         # Очистка формы
         self.ui.name_v.clear()
@@ -67,11 +67,11 @@ class RentForm(QWidget):
         self.ui.pass_id_v.clear()
 
         # Переключение режима (активно или нет)
-        self.ui.name_v.setEnabled(flag)
-        self.ui.lastname_v.setEnabled(flag)
-        self.ui.surname_v.setEnabled(flag)
-        self.ui.pass_id_v.setEnabled(flag)
-        self.ui.cust_table.setEnabled(not flag)
+        self.ui.name_v.setEnabled(is_new_cust)
+        self.ui.lastname_v.setEnabled(is_new_cust)
+        self.ui.surname_v.setEnabled(is_new_cust)
+        self.ui.pass_id_v.setEnabled(is_new_cust)
+        self.ui.cust_table.setEnabled(not is_new_cust)
 
     # Выбор клиента из таблицы
     def choice_cust(self):
@@ -87,12 +87,22 @@ class RentForm(QWidget):
     # Проверка формы договора
     def check_rent_form(self):
         valid_flag = True
+        msg = "Проверьте правильность введенных данных:\n"
         for field_name in self.customer_db.fields_labels:
-            if not self.ui.__getattribute__(field_name + '_v').text(): valid_flag = False
+            if not self.ui.__getattribute__(field_name + '_v').text():
+                valid_flag = False
+                msg += "\nВсе поля должны быть заполнены."
+                break
+
+        end_dt = dt.datetime.strptime(self.ui.end_date_v.text(), self.datetime_format)
+        start_dt = dt.datetime.strptime(self.ui.start_date_v.text(), self.datetime_format)
+        if start_dt > end_dt:
+            valid_flag = False
+            msg += "\nДата начала аренды не может быть больше даты окончания."
         if valid_flag:
             self.add_rent()
         else:
-            is_check = QMessageBox.warning(self, "Некоректный ввод", "Проверьте правильность введенных данных")
+            is_check = QMessageBox.warning(self, "Некоректный ввод", msg)
 
     # Добавить договор аренды
     def add_rent(self):
@@ -116,7 +126,8 @@ class RentForm(QWidget):
         if is_add == QMessageBox.Yes:
             self.vehicle_db.edit_spec(veh_id=self.veh_id, new_values={"start_date": start_dt_f,
                                                                       "end_date": end_dt_f,
-                                                                      "cust_id": self.cur_cust_id})
+                                                                      "cust_id": self.cur_cust_id,
+                                                                      "status": 2})
             logging.debug(f"New rent: {self.cur_cust_id} -> {veh_data['id']}")
             self.form_is_valid = True
             self.close()

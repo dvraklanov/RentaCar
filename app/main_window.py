@@ -122,18 +122,20 @@ class MainWindow(QMainWindow):
                                                               self.vehicle_data.status_list[int(item)]))
 
         date_val = veh_data.get("end_date")
-        msg_flag = False
+        rent_flag = False
+        rent_end_flag = False
         msg = ""
         if date_val:
             rent_date = datetime.strptime(date_val, self.rent_form.datetime_format)
+            rent_flag = True
             if rent_date < datetime.now():
-                msg_flag = True
+                rent_end_flag = True
                 msg = "Внимание! У данного автомобиля закончилась аренда!"
 
-        self.ui.close_rent_btn.setEnabled(msg_flag)
+        self.ui.close_rent_btn.setEnabled(rent_end_flag)
         self.ui.msg_box.setText(msg)
-        self.ui.delete_btn.setEnabled(not msg_flag)
-        self.ui.new_rent_btn.setEnabled(not msg_flag)
+        self.ui.delete_btn.setEnabled(not rent_flag)
+        self.ui.new_rent_btn.setEnabled(not rent_flag)
 
     # Заполнить опции фильтра
     def fill_filter_combobox(self):
@@ -206,7 +208,8 @@ class MainWindow(QMainWindow):
             if is_close == QMessageBox.Yes:
                 self.vehicle_data.edit_spec(veh_id=veh_id, new_values={"start_date": "",
                                                                        "end_date": "",
-                                                                       "cust_id": ""})
+                                                                       "cust_id": "",
+                                                                       "status": 1})
                 logging.debug(f"Close rent ({veh_id=})")
                 self.reset_ui()
 
