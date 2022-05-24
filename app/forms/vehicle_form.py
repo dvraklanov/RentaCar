@@ -16,20 +16,21 @@ class VehicleForm(QWidget):
         super(VehicleForm, self).__init__()
         if valid_params is None:
             valid_params = {}
-        self.valid_params = valid_params
+
+        """Установка интерфейса"""
         self.ui = Ui_veh_form()
         self.ui.setupUi(self)
 
-        self.vehicle_db = vehicle_db
+        """Объекты для работы с данными"""
+        self.valid_params = valid_params  # Валидаторы для полей формы
+        self.vehicle_db = vehicle_db  # Бд для авто
+        self.form_values = dict()  # Значение полей формы
+        self.form_is_valid = False  # Заполнена ли форма
+        self.file_name = ""  # Имя файла изображения авто
 
-        self.form_values = dict()
-        self.form_is_valid = False
-
-        self.file_name = ""
-
+        """Установка функционала элементов интерфейса"""
         self.ui.add_btn.clicked.connect(self.get_form_fields)
         self.ui.find_img_btn.clicked.connect(self.show_file_dialog)
-        # Добавить класс валидатора и регулярные выражения для остальных полей
 
     # Получить значения полей формы
     def get_form_fields(self):
@@ -40,11 +41,14 @@ class VehicleForm(QWidget):
         for col in cols:
             if hasattr(self.ui, col + '_v'):
                 field = self.ui.__getattribute__(col + '_v')
+
+                # Обработка значений для разных типов полей
                 if type(field) == QComboBox:
                     txt = field.currentText()
                 else:
                     txt = field.text()
                     validator = self.valid_params[col]['func'] if col in self.valid_params else lambda x: True
+
                     if txt:
                         if not validator(txt):
                             err = True
@@ -54,8 +58,10 @@ class VehicleForm(QWidget):
                         err = True
                         err_msg = "Все поля должны быть заполнены!"
                         break
+
                 self.form_values[col] = txt
 
+        # Окно с информацией о заполнении формы (ошибка/подтверждение)
         resp = self.show_msg(err_msg=err_msg, is_err=err)
         if resp == QMessageBox.Save:
             logging.debug(f"Add new data in db.\n{self.form_values}")
@@ -88,11 +94,13 @@ class VehicleForm(QWidget):
 
             msg_box.setStandardButtons(QMessageBox.Cancel)
             msg_box.setIcon(QMessageBox.Critical)
+
         else:
             win_title = "Проверьте данные!"
             message += "подвердите действие."
             msg_box.setStandardButtons(QMessageBox.Save | QMessageBox.Cancel)
             msg_box.setIcon(QMessageBox.Question)
+
         msg_box.setWindowTitle(win_title)
         msg_box.setText(message)
         return msg_box.exec_()

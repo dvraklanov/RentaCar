@@ -22,18 +22,19 @@ class MainWindow(QMainWindow):
         # Инициализация родительского класса
         super(MainWindow, self).__init__()
 
-        # Установка интерфейса
+        """Установка интерфейса"""
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
         """Объекты для работы с данными"""
 
-        self.db = Database("app/data/test_db")
-        self.vehicle_data = Vehicles(self.db)
-        self.customers_data = Customers(self.db)
-        self.veh_filter = dict()
-        self.cur_item = None
+        self.db = Database("app/data/RentaCar")  # Объкет базы данных
+        self.vehicle_data = Vehicles(self.db)  # Класс для работы с авто
+        self.customers_data = Customers(self.db)  # Класс для работы с клиентами
+        self.veh_filter = dict()  # Фильтр для поиска авто в базе
+        self.cur_item = None  # Текущий выбранная запись авто
 
+        # Функции-валидаторы для полей формы добавления авто
         self.veh_form_valid = {
             "number_plate": {"func": lambda x: x not in self.vehicle_data.get_uniq_spec("number_plate"),
                              "msg": "Автомобиль с введеным гос. номером уже существует в базе."},
@@ -46,8 +47,10 @@ class MainWindow(QMainWindow):
             "rental_price": {"func": lambda x: x.isdigit(),
                              "msg": f"{self.vehicle_data.spec_dict['rental_price']} должно быть числом"}
         }
-        self.veh_form = VehicleForm(vehicle_db=self.vehicle_data, valid_params=self.veh_form_valid)
 
+        # Форма добавления авто
+        self.veh_form = VehicleForm(vehicle_db=self.vehicle_data, valid_params=self.veh_form_valid)
+        # Форма оформления аренды
         self.rent_form = RentForm(vehicle_db=self.vehicle_data, customer_db=self.customers_data)
 
         """Установка доп. параметров интерфейса"""
@@ -71,14 +74,14 @@ class MainWindow(QMainWindow):
         self.ui.spec_table.setColumnWidth(0, 200)
 
         """Установка функционала элементов интерфейса"""
-        self.ui.veh_table.cellClicked.connect(self.set_spec_table)
-        self.ui.find_btn.clicked.connect(self.find_by_filter)
-        self.ui.add_veh_btn.clicked.connect(self.veh_form.show)
-        self.ui.new_rent_btn.clicked.connect(self.rent_form_show)
-        self.ui.delete_btn.clicked.connect(self.del_veh)
-        self.ui.close_rent_btn.clicked.connect(self.close_rent)
-        self.veh_form.VehicleFormFilled.connect(self.get_veh_form_v)
-        self.rent_form.RentFormFilled.connect(self.rent_form_close)
+        self.ui.veh_table.cellClicked.connect(self.set_spec_table)  # Отображения информации о выбранном авто
+        self.ui.find_btn.clicked.connect(self.find_by_filter)  # Поиск авто в бд по текущему фильтру
+        self.ui.add_veh_btn.clicked.connect(self.veh_form.show)  # Отображение формы добавления авто
+        self.ui.new_rent_btn.clicked.connect(self.rent_form_show)  # Отображение формы оформления аренды
+        self.ui.delete_btn.clicked.connect(self.del_veh)  # Удаления выбранного авто из бд
+        self.ui.close_rent_btn.clicked.connect(self.close_rent)  # Закрытие аренды выбранного авто
+        self.veh_form.VehicleFormFilled.connect(self.get_veh_form_v)  # Получение данных из формы добавления авто
+        self.rent_form.RentFormFilled.connect(self.rent_form_close)  # Действия после закрытия формы аренды
 
         """Действия при запуске программы"""
         self.reset_ui()
@@ -99,6 +102,7 @@ class MainWindow(QMainWindow):
     def set_spec_table(self):
 
         self.ui.spec_table.setRowCount(0)
+        # Получчение данных из бд
         self.cur_item = self.ui.veh_table.currentItem()
         veh_id = self.ui.veh_table.item(self.cur_item.row(), 0).text()
         veh_data = self.vehicle_data.get_spec(veh_id=veh_id)
@@ -115,12 +119,14 @@ class MainWindow(QMainWindow):
         else:
             logging.debug(f"Can't find img file for veh ({veh_id=})")
 
+        # Заполнение таблицы информации
         for i, col in enumerate(cols):
             self.ui.spec_table.setItem(i, 0, QTableWidgetItem(self.vehicle_data.spec_dict.get(col, col)))
             item = str(veh_data.get(col, i))
             self.ui.spec_table.setItem(i, 1, QTableWidgetItem(item if col != 'status' else
                                                               self.vehicle_data.status_list[int(item)]))
 
+        # Проверка аренды авто
         date_val = veh_data.get("end_date")
         rent_flag = False
         rent_end_flag = False
@@ -132,6 +138,7 @@ class MainWindow(QMainWindow):
                 rent_end_flag = True
                 msg = "Внимание! У данного автомобиля закончилась аренда!"
 
+        # Активация кнопок меню
         self.ui.close_rent_btn.setEnabled(rent_end_flag)
         self.ui.msg_box.setText(msg)
         self.ui.delete_btn.setEnabled(not rent_flag)
@@ -167,6 +174,7 @@ class MainWindow(QMainWindow):
 
         if valid:
             self.vehicle_data.add_veh(form)
+            # Если в форме указан файл, скопировать картинку
             file = self.veh_form.file_name
             if file:
                 shutil.copy2(file, f"app/data/img/{self.vehicle_data.db.get_last_added_id()}.{file.split('.')[-1]}")
@@ -176,13 +184,16 @@ class MainWindow(QMainWindow):
     # Сборосить интерфейс (обновить таблицу авто, фильтр, сбросить окно данных об авто)
     def reset_ui(self):
 
+        # Сброс окна выбора ав т
+        self.set_veh_table()
+        self.fill_filter_combobox()
+
+        # Сброс окна информации об авто
         self.ui.spec_table.setRowCount(0)
         self.ui.img_box.clear()
         self.ui.msg_box.clear()
 
-        self.set_veh_table()
-        self.fill_filter_combobox()
-
+        # Сброс кнопок
         self.ui.delete_btn.setEnabled(False)
         self.ui.new_rent_btn.setEnabled(False)
         self.ui.close_rent_btn.setEnabled(False)

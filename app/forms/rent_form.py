@@ -18,25 +18,25 @@ class RentForm(QWidget):
         self.ui = Ui_rent_form()
         self.ui.setupUi(self)
 
-        # Объекты для работы с данными
-        self.vehicle_db = vehicle_db
-        self.customer_db = customer_db
-        self.veh_id = None
-        self.form_is_valid = False
-        self.cur_cust = None
-        self.form_values = dict()
-        self.datetime_format = "%d.%m.%Y"
+        """Объекты для работы с данными"""
+        self.vehicle_db = vehicle_db  # Бд для авто
+        self.customer_db = customer_db  # Бд для клиентов
+        self.veh_id = None  # ID выбранного авто
+        self.form_is_valid = False  # Заполнена ли форма
+        self.cur_cust_id = None  # ID выбранного клиента
+        self.form_values = dict()  # Значения полей формы
+        self.datetime_format = "%d.%m.%Y"  # Формат отображения даты
 
-        # Начальные значения полей
+        """Начальные значения полей"""
         self.ui.start_date_v.setDate(dt.datetime.now())
         self.ui.end_date_v.setDate(dt.datetime.now() + dt.timedelta(days=1))
 
-        # Установление функционала элементов формы
-        self.ui.new_cust_v.toggled.connect(self.new_cust_enable)
-        self.ui.cust_table.cellClicked.connect(self.choice_cust)
-        self.ui.add_rent_btn.clicked.connect(self.check_rent_form)
+        """Установление функционала элементов формы"""
+        self.ui.new_cust_v.toggled.connect(self.new_cust_enable)  # Выбор: новый клиент или из бд
+        self.ui.cust_table.cellClicked.connect(self.choice_cust)  # Выбор клиента в таблице
+        self.ui.add_rent_btn.clicked.connect(self.check_rent_form)  # Проверка формы
 
-        # Запрет на редактирование таблицы и выбора несколько строк
+        """Запрет на редактирование таблицы и выбора несколько строк"""
         self.ui.cust_table.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.ui.cust_table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Fixed)
         self.ui.cust_table.setSelectionBehavior(QAbstractItemView.SelectRows)
@@ -87,6 +87,8 @@ class RentForm(QWidget):
     # Проверка формы договора
     def check_rent_form(self):
         valid_flag = True
+
+        # Все поля должны быть заполнены
         msg = "Проверьте правильность введенных данных:\n"
         for field_name in self.customer_db.fields_labels:
             if not self.ui.__getattribute__(field_name + '_v').text():
@@ -94,11 +96,13 @@ class RentForm(QWidget):
                 msg += "\nВсе поля должны быть заполнены."
                 break
 
+        # Оконачение не должно быть раньше начала аренды
         end_dt = dt.datetime.strptime(self.ui.end_date_v.text(), self.datetime_format)
         start_dt = dt.datetime.strptime(self.ui.start_date_v.text(), self.datetime_format)
         if start_dt > end_dt:
             valid_flag = False
             msg += "\nДата начала аренды не может быть больше даты окончания."
+
         if valid_flag:
             self.add_rent()
         else:
