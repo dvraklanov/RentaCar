@@ -101,11 +101,11 @@ class Ui_rent_form(object):
 
         self.formLayout.setWidget(4, QFormLayout.LabelRole, self.pass_l)
 
-        self.pass_v = QLineEdit(self.horizontalLayoutWidget)
-        self.pass_v.setObjectName(u"pass_v")
-        self.pass_v.setEnabled(False)
+        self.pass_id_v = QLineEdit(self.horizontalLayoutWidget)
+        self.pass_id_v.setObjectName(u"pass_id_v")
+        self.pass_id_v.setEnabled(False)
 
-        self.formLayout.setWidget(4, QFormLayout.FieldRole, self.pass_v)
+        self.formLayout.setWidget(4, QFormLayout.FieldRole, self.pass_id_v)
 
         self.start_date_l = QLabel(self.horizontalLayoutWidget)
         self.start_date_l.setObjectName(u"start_date_l")
@@ -197,3 +197,10 @@ class Ui_rent_form(object):
         self.end_date_l.setText(QCoreApplication.translate("rent_form", u"\u041e\u043a\u043e\u043d\u0447\u0430\u043d\u0438\u0435 \u0430\u0440\u0435\u043d\u0434\u044b", None))
         self.add_rent_btn.setText(QCoreApplication.translate("rent_form", u"\u0413\u043e\u0442\u043e\u0432\u043e", None))
         self.msg_box.setText("")
+        self.cust_table_lable.setText(QCoreApplication.translate("rent_form", u"\u0411\u0430\u0437\u0430 \u0434\u0430\u043d\u043d\u044b\u0445 \u043a\u043b\u0438\u0435\u043d\u0442\u043e\u0432", None))
+        ___qtablewidgetitem = self.cust_table.horizontalHeaderItem(0)
+        ___qtablewidgetitem.setText(QCoreApplication.translate("rent_form", u"ID", None));
+        ___qtablewidgetitem1 = self.cust_table.horizontalHeaderItem(1)
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("rent_form", u"\u0424\u0418\u041e", None));
+    # retranslateUi
+

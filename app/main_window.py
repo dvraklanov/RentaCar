@@ -123,12 +123,14 @@ class MainWindow(QMainWindow):
                                                               self.vehicle_data.status_list[int(item)]))
 
     # Заполнить опции фильтра
-    def fill_combobox(self):
+    def fill_filter_combobox(self):
 
         cols = self.vehicle_data.cols[1:]
         for col in cols:
             if hasattr(self.ui, col + '_v'):
                 checkbox = self.ui.__getattribute__(col + '_v')
+                checkbox.clear()
+                checkbox.addItem("")
                 for item in self.vehicle_data.get_uniq_spec(col):
                     checkbox.addItem(str(item))
 
@@ -163,7 +165,7 @@ class MainWindow(QMainWindow):
         self.ui.img_box.clear()
 
         self.set_veh_table()
-        self.fill_combobox()
+        self.fill_filter_combobox()
 
         self.ui.delete_btn.setEnabled(False)
         self.ui.new_rent_btn.setEnabled(False)
