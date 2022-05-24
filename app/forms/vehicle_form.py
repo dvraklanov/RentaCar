@@ -2,7 +2,7 @@ import logging
 from typing import NoReturn, List, Dict, Callable, Union
 
 from PySide6 import QtGui, QtCore
-from PySide6.QtWidgets import QWidget, QFileDialog, QComboBox, QMessageBox
+from PySide6.QtWidgets import QWidget, QFileDialog, QComboBox, QMessageBox, QLineEdit
 from app.ui.ui_vehicle_form import Ui_veh_form
 
 # Форма добавления нового авто
@@ -87,10 +87,12 @@ class VehicleForm(QWidget):
                 message = err_msg + "\n" + message
 
             msg_box.setStandardButtons(QMessageBox.Cancel)
+            msg_box.setIcon(QMessageBox.Critical)
         else:
             win_title = "Проверьте данные!"
             message += "подвердите действие."
             msg_box.setStandardButtons(QMessageBox.Save | QMessageBox.Cancel)
+            msg_box.setIcon(QMessageBox.Question)
         msg_box.setWindowTitle(win_title)
         msg_box.setText(message)
         return msg_box.exec_()
@@ -103,7 +105,9 @@ class VehicleForm(QWidget):
 
         for col in cols:
             if hasattr(self.ui, col + '_v'):
-                self.ui.__getattribute__(col + '_v').clear()
+                field = self.ui.__getattribute__(col + '_v')
+                if type(field) == QLineEdit:
+                    field.clear()
 
         self.form_is_valid = False
         event.accept()

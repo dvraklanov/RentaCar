@@ -305,11 +305,6 @@
            <attribute name="verticalHeaderVisible">
             <bool>false</bool>
            </attribute>
-           <row>
-            <property name="text">
-             <string>New Row</string>
-            </property>
-           </row>
            <column>
             <property name="text">
              <string>name</string>
@@ -323,7 +318,7 @@
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="3,1,1">
+          <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="3,1,1,1">
            <item>
             <widget class="QLabel" name="msg_box">
              <property name="text">
@@ -338,6 +333,16 @@
              </property>
              <property name="text">
               <string>Аренда</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="close_rent_btn">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string> Закрыть аренду</string>
              </property>
             </widget>
            </item>

@@ -195,10 +195,6 @@ class Ui_MainWindow(object):
         self.spec_table.setHorizontalHeaderItem(0, __qtablewidgetitem3)
         __qtablewidgetitem4 = QTableWidgetItem()
         self.spec_table.setHorizontalHeaderItem(1, __qtablewidgetitem4)
-        if (self.spec_table.rowCount() < 1):
-            self.spec_table.setRowCount(1)
-        __qtablewidgetitem5 = QTableWidgetItem()
-        self.spec_table.setVerticalHeaderItem(0, __qtablewidgetitem5)
         self.spec_table.setObjectName(u"spec_table")
         self.spec_table.horizontalHeader().setVisible(False)
         self.spec_table.horizontalHeader().setDefaultSectionSize(200)
@@ -220,6 +216,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3.addWidget(self.new_rent_btn)
 
+        self.close_rent_btn = QPushButton(self.horizontalLayoutWidget)
+        self.close_rent_btn.setObjectName(u"close_rent_btn")
+        self.close_rent_btn.setEnabled(False)
+
+        self.horizontalLayout_3.addWidget(self.close_rent_btn)
+
         self.delete_btn = QPushButton(self.horizontalLayoutWidget)
         self.delete_btn.setObjectName(u"delete_btn")
         self.delete_btn.setEnabled(False)
@@ -229,6 +231,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.setStretch(0, 3)
         self.horizontalLayout_3.setStretch(1, 1)
         self.horizontalLayout_3.setStretch(2, 1)
+        self.horizontalLayout_3.setStretch(3, 1)
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_3)
 
@@ -288,10 +291,9 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"name", None));
         ___qtablewidgetitem4 = self.spec_table.horizontalHeaderItem(1)
         ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"value", None));
-        ___qtablewidgetitem5 = self.spec_table.verticalHeaderItem(0)
-        ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
         self.msg_box.setText("")
         self.new_rent_btn.setText(QCoreApplication.translate("MainWindow", u"\u0410\u0440\u0435\u043d\u0434\u0430", None))
+        self.close_rent_btn.setText(QCoreApplication.translate("MainWindow", u" \u0417\u0430\u043a\u0440\u044b\u0442\u044c \u0430\u0440\u0435\u043d\u0434\u0443", None))
         self.delete_btn.setText(QCoreApplication.translate("MainWindow", u"\u0423\u0434\u0430\u043b\u0438\u0442\u044c", None))
     # retranslateUi
 

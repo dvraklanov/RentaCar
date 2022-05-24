@@ -1,10 +1,10 @@
 import os
+from datetime import datetime
 import logging
 import shutil
 
-from PySide6 import QtWidgets
 from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QAbstractItemView, QMessageBox
+from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QAbstractItemView, QMessageBox, QHeaderView
 from .ui.ui_main_window import Ui_MainWindow
 
 from .database import Database
@@ -53,12 +53,12 @@ class MainWindow(QMainWindow):
         """Установка доп. параметров интерфейса"""
 
         # Запрет на редактирование данных в таблицах
-        self.ui.veh_table.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
-        self.ui.spec_table.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.ui.veh_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.ui.spec_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
 
         # Запрет на редактирование размеров колонок таблиц
-        self.ui.veh_table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Fixed)
-        self.ui.spec_table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Fixed)
+        self.ui.veh_table.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.ui.spec_table.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
 
         # Выбор всей строки при нажатии
         self.ui.veh_table.setSelectionBehavior(QAbstractItemView.SelectRows)
@@ -76,6 +76,7 @@ class MainWindow(QMainWindow):
         self.ui.add_veh_btn.clicked.connect(self.veh_form.show)
         self.ui.new_rent_btn.clicked.connect(self.rent_form_show)
         self.ui.delete_btn.clicked.connect(self.del_veh)
+        self.ui.close_rent_btn.clicked.connect(self.close_rent)
         self.veh_form.VehicleFormFilled.connect(self.get_veh_form_v)
         self.rent_form.RentFormFilled.connect(self.rent_form_close)
 
@@ -97,8 +98,6 @@ class MainWindow(QMainWindow):
     # Заполнение таблицы с информацией об авто
     def set_spec_table(self):
 
-        self.ui.delete_btn.setEnabled(True)
-        self.ui.new_rent_btn.setEnabled(True)
         self.ui.spec_table.setRowCount(0)
         self.cur_item = self.ui.veh_table.currentItem()
         veh_id = self.ui.veh_table.item(self.cur_item.row(), 0).text()
@@ -106,7 +105,7 @@ class MainWindow(QMainWindow):
         cols = self.vehicle_data.cols[1:]
         self.ui.spec_table.setRowCount(len(cols))
 
-        # Если существует картинка, до загрузить ее
+        # Если существует картинка, то загрузить ее
         self.ui.img_box.clear()
         img_path = f"app/data/img/{veh_id}.jpg"
         if os.path.exists(img_path) and os.path.isfile(img_path):
@@ -121,6 +120,20 @@ class MainWindow(QMainWindow):
             item = str(veh_data.get(col, i))
             self.ui.spec_table.setItem(i, 1, QTableWidgetItem(item if col != 'status' else
                                                               self.vehicle_data.status_list[int(item)]))
+
+        date_val = veh_data.get("end_date")
+        msg_flag = False
+        msg = ""
+        if date_val:
+            rent_date = datetime.strptime(date_val, self.rent_form.datetime_format)
+            if rent_date < datetime.now():
+                msg_flag = True
+                msg = "Внимание! У данного автомобиля закончилась аренда!"
+
+        self.ui.close_rent_btn.setEnabled(msg_flag)
+        self.ui.msg_box.setText(msg)
+        self.ui.delete_btn.setEnabled(not msg_flag)
+        self.ui.new_rent_btn.setEnabled(not msg_flag)
 
     # Заполнить опции фильтра
     def fill_filter_combobox(self):
@@ -163,12 +176,14 @@ class MainWindow(QMainWindow):
 
         self.ui.spec_table.setRowCount(0)
         self.ui.img_box.clear()
+        self.ui.msg_box.clear()
 
         self.set_veh_table()
         self.fill_filter_combobox()
 
         self.ui.delete_btn.setEnabled(False)
         self.ui.new_rent_btn.setEnabled(False)
+        self.ui.close_rent_btn.setEnabled(False)
 
     # Удалить автомобиль из бд
     def del_veh(self):
@@ -180,6 +195,19 @@ class MainWindow(QMainWindow):
 
             if is_del == QMessageBox.Yes:
                 self.vehicle_data.del_veh(veh_id=veh_id)
+                self.reset_ui()
+
+    # Закрыть аренду авто
+    def close_rent(self):
+        if self.cur_item:
+            veh_id = self.ui.veh_table.item(self.cur_item.row(), 0).text()
+            is_close = QMessageBox.question(self, "Закрыть аренду",
+                                            "Вы действительно хотите закрыть аренду?")
+            if is_close == QMessageBox.Yes:
+                self.vehicle_data.edit_spec(veh_id=veh_id, new_values={"start_date": "",
+                                                                       "end_date": "",
+                                                                       "cust_id": ""})
+                logging.debug(f"Close rent ({veh_id=})")
                 self.reset_ui()
 
     # Показать форму аренды

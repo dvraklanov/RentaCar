@@ -92,7 +92,7 @@ class RentForm(QWidget):
         if valid_flag:
             self.add_rent()
         else:
-            is_check = QMessageBox.question(self, "Некоректный ввод", "Проверьте правильность введенных данных")
+            is_check = QMessageBox.warning(self, "Некоректный ввод", "Проверьте правильность введенных данных")
 
     # Добавить договор аренды
     def add_rent(self):
