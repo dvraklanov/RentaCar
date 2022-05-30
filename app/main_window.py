@@ -41,7 +41,7 @@ class MainWindow(QMainWindow):
             "n_seat": {"func": lambda x: x.isdigit(),
                        "msg": f"{self.vehicle_data.spec_dict['n_seat']} должно быть числом"},
             "power_hp": {"func": lambda x: x.isdigit(),
-                         "msg": f"{self.vehicle_data.spec_dict['power_hp']} должно быть чи   слом"},
+                         "msg": f"{self.vehicle_data.spec_dict['power_hp']} должно быть числом"},
             "name": {"func": lambda x: not x.isdigit(),
                      "msg": "Введите корректное название авто."},
             "rental_price": {"func": lambda x: x.isdigit(),
